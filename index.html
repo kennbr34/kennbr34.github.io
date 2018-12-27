@@ -799,10 +799,7 @@ passmanager -u allpasses -p gen -f ./passwords
 <H2>BUGS</H2>
 
 <P>
-If the iterator used to index yaxaKey array elements is only 1023 then the kystream repeats
-every 64 bytes.  The iterator must be allowed to index yaxaKey[1024]. An extra byte is allocated and derived for
-this purpose (to avoid undefined behavior of addressing yaxaKey[1024] if only allocated to 1024 bytes ) but it
-is still unclear how/why repetition was ever imparted in keystream at all with this algorithm design.
+See <DT><A HREF="#lbAW">YAXA Implementation Flaw</A><DD>
 <P>
   <A HREF="#index">Back To Index</A>
 <A NAME="lbBE">&nbsp;</A>
