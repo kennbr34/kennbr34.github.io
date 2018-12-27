@@ -487,6 +487,104 @@ As the encryption function<B>(E)</B> is incrementally applied to each byte in th
 Finally, the keystream <B>(KS₁-₁₀₂₅)</B> creates a non-periodic key to span the message length <B>(P₁-₁₀₂₅)</B> which creates the 'one-time-pad'.  The program updates the salts used for IV/nonce generation upon every database update to avoid nonce reuse.
 <P>
 <A NAME="lbAW">&nbsp;</A>
+<H3>YAXA Implementation Flaw</H3>
+
+<P>
+The key counter variable is declared as an integer, but returned from the YAXA encryption operation as a char.  This reduces
+its overall size from 2^32 bytes, to just 255, which means the algorithm above would have induced a period in the
+keystream at a very short interval of 1024 bytes.
+<P>
+<DL COMPACT><DT><DD>
+<B>YAXA Encryption Function</B>
+<P>
+unsigned char yaxa(unsigned char messageByte, unsigned char keyByte, unsigned char nonceByte)
+<br>
+{
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;keyStreamGenByte++&nbsp;&nbsp;^&nbsp;nonceByte&nbsp;^&nbsp;keyByte&nbsp;^&nbsp;messageByte;
+<BR>
+}
+<P>
+
+<P>
+the incrementation of keyStreamGenByte via keyStreamGenByte++ fulfills keycounter function g()
+<br>
+keyStreamGenByte will dually act as KC counter variable and generate KS byte
+<br>
+return line acts as function E()
+<P>
+</DL>
+If the iterator used to index yaxaKey array elements is only 1023 then the kystream repeats
+every 1024 bytes.  The iterator must be allowed to index yaxaKey[1024]. An extra byte is allocated and derived for
+this purpose to avoid undefined behavior of addressing yaxaKey[1024] if only allocated to 1024 bytes. This does not solve
+the problem but it increases the period size to ~3.4 megabytes.  Since the password entries are padded in 1024 bytes of data,
+this means that the password file can still contain 3331 password entires before the keystream becomes periodic.
+<P>
+<DL COMPACT><DT><DD>
+<B>YAXA Buffer Iteration Loop</B>
+<P>
+for (i = 0; i &lt; fileSize; i++)
+<br>
+{
+<br>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encryptedBuffer[i]&nbsp;=&nbsp;yaxa(decryptedBuffer[i],&nbsp;yaxaKey[ii],&nbsp;yaxaNonce[n]);
+<br>
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>if(ii &lt; 1024)<BR>
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>ii++;<BR>
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>else if(ii == 1024)<BR>
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>ii=0;<BR>
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>if(n &lt; 64)<BR>
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>n++;<BR>
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>else if(n == 64)<BR>
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>n=0;<BR>
+}
+<P>
+with 1025 byte key buffer and 65 byte nonce buffer the keystream still becomes periodic after 3411200 byte
+<br>
+if 1024 byte and 64 bytes were used instead, period would be at 262400 bytes
+<P>
+</DL>
+<P>
+<DL COMPACT>
+<DT>
+</DL>
+<A NAME="lbAX">&nbsp;</A>
+<H3>Modified YAXA Algorithm</H3>
+
+<P>
+<DD>Subscript numbers except for KC's represet the array element being indexed
+<br>
+KC's subscript numbers represent the actual value of KC
+<P>
+At first byte of message
+<br>
+C₀ = E(P₀ ⊕ N₀ ⊕ KS₀ = f(K₀ ⊕ KC₀ = g(KC₁ + 1)))
+<P>
+At 64th byte of message
+<br>
+Note N's index rolls over to 0 after 64
+<br>
+C₆₄ = E(P₆₄ ⊕ N₆₄ ⊕ KS₆₄ = f(K₆₄ ⊕ KC₆₅ = g(KC₆₅ + 1)))
+<br>
+C₆₅ = E(P₆₅ ⊕ N₀ ⊕ KS₆₅ = f(K₆₅ ⊕ KC₆₆ = g(KC₆₆ + 1)))
+<P>
+At 1022th byte of message
+<br>
+KC will equal 255 and roll over to 0
+<br>
+C₁₀₂₂ = E(P₁₀₂₂ ⊕ N₄₇ ⊕ KS₁₀₂₂ = f(K₁₀₂₂ ⊕ KC₂₅₅ = g(KC₂₅₅ + 1)))
+<br>
+C₁₀₂₃ = E(P₁₀₂₃ ⊕ N₄₈ ⊕ KS₁₀₂₃ = f(K₁₀₂₃ ⊕ KC₀ = g(KC₀ + 1)))
+<P>
+At 1024th byte of message
+<br>
+Note K's index rolls over to 0 after 1024
+<br>
+C₁₀₂₄ = E(P₁₀₂₄ ⊕ N₄₉ ⊕ KS₁₀₂₄ = f(K₁₀₂₄ ⊕ KC₁ = g(KC₁ + 1)))
+<br>
+C₁₀₂₅ = E(P₁₀₂₅ ⊕ N₅₀ ⊕ KS₁₀₂₅ = f(K₀ ⊕ KC₁₀₂₅ = g(KC₁₀₂₅ + 1)))
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><BR>
+<P>
+<A NAME="lbAW">&nbsp;</A>
 <H3>Security of YAXA</H3>
 
 <P>
