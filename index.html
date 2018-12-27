@@ -418,7 +418,7 @@ Writing the program to function solely in memory would not necessarily make the 
 <P>
 If the system cannot protect the files based on system permissions, it's unlikely it can protect memory based on system permissions either. In either scenario, an unauthorized attacker having elevated privileges to the system implies a host of other potential attack vectors outside the scope of this program; an attacker could just as well grab it from your clipboard, the browser window you past it into, etc.  With all that in mind, while operating solely in memory  may seem much more secure superficially, the vulnerability of leaving the data in temporary files is only relevant in a situation where storage in memory is mutually vulnerable.
 <P>
-Just as accessing the data through the abstraction of a filesystem is easier, so is writing a program to handle it with file I/O.  Attempts were made to make the processing secluded to memory buffers, but as the program was originally written to function with file I/O, it made the redesign difficulties not worth the practical advantage.  Instead, cascaded and authenticated encryption was used as a stop-gap measure until the program could be written to run solely in memory.
+Just as accessing the data through the abstraction of a filesystem is easier, so is writing a program to handle it with file I/O.  Attempts were made to make the processing secluded to memory buffers, but as the program was originally written to function with file I/O, it made the redesign difficulties not worth the practical advantage.  Instead, cascaded and authenticated encryption was used as a stop-gap measure until the program could be rewritten to run solely in memory.
 <P>
   <A HREF="#index">Back To Index</A>
 <A NAME="lbAR">&nbsp;</A>
