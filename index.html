@@ -31,8 +31,6 @@
 </DL>
 <DT><A HREF="#lbAR">YAXA</A><DD>
 <DL>
-<DT><A HREF="#lbAS">Simple XOR</A><DD>
-<DT><A HREF="#lbAT">Simple XOR Algorithm</A><DD>
 <DT><A HREF="#lbAU">YAXA Stream Cipher</A><DD>
 <DT><A HREF="#lbAV">YAXA Algorithm</A><DD>
 <DT><A HREF="#lbAW">YAXA Implementation Flaw</A><DD>
@@ -419,44 +417,10 @@ With all that in mind, while operating solely in memory may seem much more secur
 <H2>YAXA</H2>
 
 <P>
-<A NAME="lbAS">&nbsp;</A>
-<H3>Simple XOR</H3>
-
-<P>
-Simple XOR is a loosely-defined method that's highlighted in a lot of C tutorial code (as well as in Bruce Schneier's &quot;Applied Cryptography&quot; where I've borrowed the moniker from) as a way to demonstrate bit-wise operation, and is similar to the Vernam cipher, but is mockably insecure in actual implementations of snake-oil or home-brewed cryptography.  As Schneier puts it, &quot;Simple XOR might keep your kid sister from reading your files, but it won't slow down a cryptanalyst for more than a few minutes.&quot;
-<P>
-
-<A NAME="lbAT">&nbsp;</A>
-<H3>Simple XOR Algorithm</H3>
-
-
-<DL COMPACT><DT><DD>
-C₁ = E(P₁ ⊕ K₁)
-<br>
-C₂ = E(P₂ ⊕ K₂)
-<br>
-C₃ = E(P₃ ⊕ K₃)
-<br>
-C₄ = E(P₄ ⊕ K₁)
-</DL>
-
-<P>
-<P>
-
-The major downfall of that is simply that with a key <B>(K₁-₃)</B> that is shorter than the plain-text message <B>(P₁-₄)</B> that is to be encrypted, the key <B>(K₁-₃)</B> will repeat itself every so often over the length of the plain-text message <B>(P₁-₄)</B> as shown above. This can be described as 'periodic', and when the length of a repeating key ( aka running key) is known, attack through frequency analysis becomes trivial. (Schneier shows how to model this attack in &quot;Applied Cryptography&quot;).
-<P>
-Conversely, when a XOR algorithm is applied with a key length that is equal to the length of the plain-text and truly random (aka a ‘one time pad’), it is said to have &quot;perfect secrecy&quot; (Shannon).  The caveat there, is that true randomness is unobtainable if generated digitally.  Still, you can get very good pseudorandomness, and if the key is non-periodic (the same length as the plain-text it's encrypting ) then it will form a pseudo-random key stream that appears to be a one-time-pad.
-<P>
-The important part of a one-time-pad beyond randomness is that it can only be used one time.  If the same pad is used to encrypt two or more messages, then the cipher-texts of those messages can be applied against each other using the same XOR operation, and computed to reveal differences between the two plain-texts that can be used to break the key. Such an attack is known as a 'many-time-pad attack'.
-<P>
-However, cryptographers learned to use another number that would determine the one-time-pad differently each time, even if the same plain-text and key were encrypted.  The key to this number was that it could only be used one time, so it is referred to as a &quot;nonce&quot;.  As long as a nonce is never reused, the one-time-pad stays a <B>one</B>-time-pad and not a <B>many</B>-time-pad.
-<P>
 <A NAME="lbAU">&nbsp;</A>
 <H3>YAXA Stream Cipher</H3>
 
-YAXA (Yet Another XOR Algorithm) is so named because it is intended to form only the most rudimentary security over the &quot;Simple XOR&quot; approach, without any intent to be &quot;unbreakable&quot; or stronger than any other established algorithm.  The entire goal is to form the simplest encryption, but with the strongest security at that limited complexity level.  It is not intended to keep information secret for long periods of time, but rather to protect plain-text data written to temporary files.
-<P>
-YAXA relies on PBKDF2 to derive a very long key based on a supplied password, and to do this using a Cryptographically Strong Pseudo Random Number Generator (CSPRNG), both of which are provided by OpenSSL.  As long as the key is non-periodic, then this cipher approaches the &quot;perfect secrecy&quot; of a one-time-pad as the key derived approaches perfect randomness.  Therefore the cryptographic strength of this cipher is partially determined by the soundness of PBKDF2's Key Derivation Function, and partially by the soundness of its own keystream generation.  Beyond that, it uses <B>Initialization Vectors</B> that cause the keystreams to be different every time, avoiding the many-time-pad problem.
+YAXA (Yet Another XOR Algorithm) is so named because it is intended to form only the most rudimentary stream cipher akin to the &quot;Simple XOR&quot; approach, without any intent to be &quot;unbreakable&quot; or stronger than any other established algorithm.  The entire goal is to form the simplest encryption, but with the strongest security at that limited complexity level.  It is not intended to keep information secret for long periods of time, but rather to protect plain-text data written to temporary files.
 <P>
 
 <A NAME="lbAV">&nbsp;</A>
