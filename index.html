@@ -606,20 +606,20 @@ id-aes256-wrap
 <H3>Key Derivation</H3>
 
 <P>
-The key derivation is done by <I><A HREF="/cgi-bin/man/man2html?3+EVP_BytesToKey">EVP_BytesToKey</A>(3)</I> which is described in detail in <I><A HREF="/cgi-bin/man/man2html?3+EVP_BytesToKey">EVP_BytesToKey</A>(3)</I> and in brief in <I><A HREF="/cgi-bin/man/man2html?3+evp">evp</A>(3)</I>:
+The key derivation is done by <I><A HREF="https://www.openssl.org/docs/man1.0.2/crypto/EVP_BytesToKey.html">EVP_BytesToKey</A>(3)</I> which is described in detail in <I><A HREF="https://www.openssl.org/docs/man1.0.2/crypto/EVP_BytesToKey.html">EVP_BytesToKey</A>(3)</I> and in brief in <I><A HREF="https://www.openssl.org/docs/man1.0.2/crypto/evp.html">evp</A>(3)</I>:
 <P>
 <DL COMPACT><DT><DD>
 The EVP_BytesToKey function provides some limited support for password based encryption. Careful selection of the parameters will provide a PKCS#5 PBKDF1 compatible implementation. However, new applications should not typically use this (preferring, for example, PBKDF2 from PCKS#5).
 </DL>
 
 <P>
-However since the default configuration uses SHA512 instead of MD5, and the digest can be user specified, this means it does not necessarily meet the PBKDF1 standards.  The decision not to use PBKDF2 was made because the EVP library KDF automatically generates appropriate keyring material for the specified ciphers.  Some use IVs and some don't, and some require different key lengths.  The <I><A HREF="/cgi-bin/man/man2html?3+EVP_BytesToKey">EVP_BytesToKey</A>(3)</I> function handles all that automatically.  Meanwhile it could be argued that SHA512 is much more impervious to collisions than MD5 so there's no reason to believe this implementation is less secure than PBKDF1 due to the use of a stronger digest algorithm.
+However since the default configuration uses SHA512 instead of MD5, and the digest can be user specified, this means it does not necessarily meet the PBKDF1 standards.  The decision not to use PBKDF2 was made because the EVP library KDF automatically generates appropriate keyring material for the specified ciphers.  Some use IVs and some don't, and some require different key lengths.  The <I><A HREF="https://www.openssl.org/docs/man1.0.2/crypto/EVP_BytesToKey.html">EVP_BytesToKey</A>(3)</I> function handles all that automatically.  Meanwhile it could be argued that SHA512 is much more impervious to collisions than MD5 so there's no reason to believe this implementation is less secure than PBKDF1 due to the use of a stronger digest algorithm.
 <P>
 <A NAME="lbBB">&nbsp;</A>
 <H3>CSPRNG</H3>
 
 <P>
-The EVP library also provides access to OpenSSL's CSPRNG as described in <I><A HREF="/cgi-bin/man/man2html?3+RAND">RAND</A>(3)</I>.  The <I><A HREF="/cgi-bin/man/man2html?3+RAND_bytes">RAND_bytes</A>(3)</I> function is what fills the buffers with pseudorandomness, generates random passwords, and generates the salt which generates YAXA's nonce as well.
+The EVP library also provides access to OpenSSL's CSPRNG as described in <I><A HREF="https://www.openssl.org/docs/manmaster/man7/RAND.html">RAND</A>(3)</I>.  The <I><A HREF="/cgi-bin/man/man2html?3+RAND_bytes">RAND_bytes</A>(3)</I> function is what fills the buffers with pseudorandomness, generates random passwords, and generates the salt which generates YAXA's nonce as well.
 <P>
   <A HREF="#index">Back To Index</A>
 <A NAME="lbBC">&nbsp;</A>
