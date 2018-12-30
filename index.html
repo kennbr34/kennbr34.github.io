@@ -79,7 +79,7 @@ service : account : password
 <br>
 foobar : foo : passfoo
 <br>
-gmail : <A HREF="mailto:account@gmail.com">account@gmail.com</A> : (*&amp;*UJD83dh
+gmail : account@gmail.com : (*&amp;*UJD83dh
 <P>
 </DL>
 
@@ -629,7 +629,7 @@ The EVP library also provides access to OpenSSL's CSPRNG as described in <I><A H
 Initialize a new password database and save it to the file passwords.  Also randomly generate a password of 32 characters for the new entry, and send that new password to the clipboard.
 <P>
 <DL COMPACT><DT><DD>
-passmanager -a &quot;gmail : <A HREF="mailto:myemail@gmail.com">myemail@gmail.com</A>&quot; -p gen -l 32 -f ./passwords -C
+passmanager -a &quot;gmail : myemail@gmail.com&quot; -p gen -l 32 -f ./passwords -C
 </DL>
 
 <P>
@@ -668,17 +668,17 @@ passmanager -U -c aes-256-cbc -H sha512 -P -f ./passwords
 </DL>
 
 <P>
-Update the previously added entry name from &quot;gmail : <A HREF="mailto:myemail@gmail.com">myemail@gmail.com</A>&quot; to &quot;gmail : <A HREF="mailto:myemail1@gmail.com">myemail1@gmail.com</A>&quot; (Note how we're partially matching &quot;gmail&quot;, and the need for quotations around the new entry name since it contains whitespace)
+Update the previously added entry name from &quot;gmail : myemail@gmail.com&quot; to &quot;gmail : myemail1@gmail.com&quot; (Note how we're partially matching &quot;gmail&quot;, and the need for quotations around the new entry name since it contains whitespace)
 <P>
 <DL COMPACT><DT><DD>
-passmanager -u gmail -n &quot;gmail : <A HREF="mailto:myemail1@gmail.com">myemail1@gmail.com</A>&quot; -f ./passwords
+passmanager -u gmail -n &quot;gmail : myemail1@gmail.com&quot; -f ./passwords
 </DL>
 
 <P>
 Add a second gmail account but with the entry password &quot;password&quot;
 <P>
 <DL COMPACT><DT><DD>
-passmanager -a &quot;gmail : <A HREF="mailto:myemail2@gmail.com">myemail2@gmail.com</A>&quot; -p password -f ./passwords
+passmanager -a &quot;gmail : myemail2@gmail.com&quot; -p password -f ./passwords
 </DL>
 
 <P>
@@ -690,14 +690,14 @@ passmanager -r allpasses -f ./passwords
 
 <P>
 <DL COMPACT><DT><DD>
-gmail : <A HREF="mailto:myemail1@gmail.com">myemail1@gmail.com</A> : Us3[Ag1&lt;lRw9%Vj5&gt;La0{Nh4|Kr8$Te7
+gmail : myemail1@gmail.com : Us3[Ag1&lt;lRw9%Vj5&gt;La0{Nh4|Kr8$Te7
 <P>
-gmail : <A HREF="mailto:myemail2@gmail.com">myemail2@gmail.com</A> : password
+gmail : myemail2@gmail.com : password
 </DL>
 
 <P>
 <P>
-To update the password for <A HREF="mailto:myemail2@gmail.com">myemail2@gmail.com</A> with a randomly generated 16 character (default) password, and send the newly created password to clipboard
+To update the password for myemail2@gmail.com with a randomly generated 16 character (default) password, and send the newly created password to clipboard
 <P>
 <DL COMPACT><DT><DD>
 passmanager -u &quot;gmail : myemail2&quot; -p gen -f ./passwords -C
@@ -711,7 +711,7 @@ passmanager -u &quot;gmail : myemail2&quot; -P -f ./passwords
 </DL>
 
 <P>
-Read the new password for <A HREF="mailto:myemail2@gmail.com">myemail2@gmail.com</A> and send it directly to the clipboard
+Read the new password for myemail2@gmail.com and send it directly to the clipboard
 <P>
 <DL COMPACT><DT><DD>
 passmanager -r &quot;gmail : myemail2&quot; -C -f ./passwords
@@ -774,15 +774,10 @@ The author consulted several reference sources in order to design and describe t
   <A HREF="#index">Back To Index</A>
 <H2>SEE ALSO</H2>
 
-<A HREF="/cgi-bin/man/man2html?1+openssl">openssl</A>(1), <A HREF="/cgi-bin/man/man2html?1+xclip">xclip</A>(1), <A HREF="/cgi-bin/man/man2html?3+crypto">crypto</A>(3), <A HREF="/cgi-bin/man/man2html?3+evp">evp</A>(3), <A HREF="/cgi-bin/man/man2html?3+EVP_BytesToKey">EVP_BytesToKey</A>(3), <A HREF="/cgi-bin/man/man2html?3+EVP_EncryptInit">EVP_EncryptInit</A>(3), <A HREF="/cgi-bin/man/man2html?3+PKCS5_PBKDF2_HMAC">PKCS5_PBKDF2_HMAC</A>(3), <A HREF="/cgi-bin/man/man2html?3+RAND">RAND</A>(3), <A HREF="/cgi-bin/man/man2html?3+RAND_bytes">RAND_bytes</A>(3)
+<A HREF="https://www.openssl.org/docs/manmaster/man1/openssl.html">openssl</A>(1), <A HREF="https://linux.die.net/man/1/xclip">xclip</A>(1), <A HREF="https://www.openssl.org/docs/manmaster/man7/crypto.html">crypto</A>(3), <A HREF="https://www.openssl.org/docs/man1.0.2/crypto/evp.html">evp</A>(3), <A HREF="https://www.openssl.org/docs/man1.0.2/crypto/EVP_BytesToKey.html">EVP_BytesToKey</A>(3), <A HREF="https://www.openssl.org/docs/man1.0.2/crypto/EVP_EncryptInit.html">EVP_EncryptInit</A>(3), <A HREF="https://www.openssl.org/docs/man1.1.0/crypto/PKCS5_PBKDF2_HMAC.html">PKCS5_PBKDF2_HMAC</A>(3), <A HREF="https://www.openssl.org/docs/manmaster/man7/RAND.html">RAND</A>(3), <A HREF="https://www.openssl.org/docs/man1.0.2/crypto/RAND_bytes.html">RAND_bytes</A>(3)
 <P>
 <P>
 <P>
 <A HREF="#index">Back To Index</A>
-<HR>
-This document was created by
-<A HREF="/cgi-bin/man/man2html">man2html</A>,
-using the manual pages.<BR>
-Time: 02:13:09 GMT, December 18, 2018
 </BODY>
 </HTML>
