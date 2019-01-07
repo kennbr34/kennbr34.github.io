@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML><HEAD><TITLE>ken's passmanager</TITLE>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
@@ -105,14 +106,14 @@ With this format and the modes provided, the user can easily and securely manage
 <br>
 Automake Tarballs:
 <br>
-<A HREF="https://github.com/kennbr34/passmanager/raw/tarrball/passmanager-2.0.0.tar.gz">2.0.0 tarball</A> - without YAXA (replaed with camellia-256-ofb)
+<A HREF="https://github.com/kennbr34/passmanager/raw/tarrball/passmanager-2.1.0.tar.gz">2.1.0 tarball</A> - without YAXA (replaed OpenSSL ciphers)
 <br>
 <A HREF="https://github.com/kennbr34/passmanager/raw/tarrball/passmanager-1.24.1.tar.gz">1.24.1 tarball</A> - with YAXA (homebrewed crypto)
 <br>
 <br>
 C Source Files:
 <br>
-  <A HREF="https://raw.githubusercontent.com/kennbr34/passmanager/1.24.1/src/passmanager.c">passmanager.c</A> - 2.0.0
+  <A HREF="https://raw.githubusercontent.com/kennbr34/passmanager/master/src/passmanager.c">passmanager.c</A> - 2.1.0
 <br>
   <A HREF="https://raw.githubusercontent.com/kennbr34/passmanager/1.24.1/src/passmanager.c">passmanager.c</A> - 1.24.1
 <br>
@@ -127,18 +128,20 @@ Documentation:
 <A NAME="DEPENDENCIES">&nbsp;</A>
 <H2>DEPENDENCIES</H2>
 <P>
-OpenSSL
+OpenSSL development files (1.0.1.g or higher)
   <br>
-xclip(optional)
+xclip (optional for clipboard functions)
 <P>
 <A HREF="#index">Back To Index</A>
   
 <A NAME="COMPILATION">&nbsp;</A>
 <H2>COMPILATION</H2>
 <P>
-Compilation with gcc is simple, just link with '-lcrypto'.
+If you don't want to install the automake package contents, and want to compile the binary alone, just link with lcrypto
 <P>
 gcc passmanager.c -o passmanager -lcrypto
+<P>
+Special Note: I would advice against using optimization, because the functions which are used to clear memory of sensitive data may be optimized out.
   <P>
   <A HREF="#index">Back To Index</A>
  
@@ -151,6 +154,15 @@ passmanager [<B>-a</B> <I>entry name</I> | <B>-r</B> <I>entry name</I> | <B>-d</
 <P>
 <P>
 <A HREF="#index">Back To Index</A>
+<A NAME="lbAD">&nbsp;</A>
+<H2>OPTIONS SUMMARY</H2>
+
+<P>
+
+passmanager [<B>-a</B> <I>entry name</I> | <B>-r</B> <I>entry name</I> | <B>-d</B> <I>entry name</I> | <B>-u</B> <I>entry name</I> [-n <I>new name</I> ] | <B>-U</B> ] [-p <I>new entry password</I>] [-l <I>random password length</I>] [-x <I>database password</I>] [-c <I>first-cipher:second-cipher</I>] [-H <I>first:digest:second-digest</I>] [ <B>-P</B> ] <B>-f</B> <I>database file</I> [ <B>-C</B> ] [ <B>-s</B> <I>secondss</I> ]
+<P>
+<P>
+
 <A NAME="lbAD">&nbsp;</A>
 <H2>OPTIONS SUMMARY</H2>
 
@@ -186,10 +198,10 @@ Options may have different implications depending on operating mode
 <B>-x</B> <I>database password</I> - To supply database password as command-line argument (not reccomended)
 <P>
 
-<B>-c</B> <I>cipher</I> - Specify 'list' for a list of methods available to OpenSSL. Default: AES-256-CTR.
+<B>-c</B> <I>first-cipher:second-cipher</I> - Specify 'list' for a list of methods available to OpenSSL. Default: camellia-256-ofb:aes-256-ctr.
 <P>
 
-<B>-H</B> <I>digest</I> - Specify 'list' for a list of methods available to OpenSSL. Default: SHA512.
+<B>-H</B> <I>first-digest:second-digest</I> - Specify 'list' for a list of methods available to OpenSSL. Default: whirlpool:sha512.
 <P>
 
 <B>-P</B> - In <I>Update entry</I> or <I>Update database</I>  mode (<B>-u</B> and <B>-U</B> respectively) this option enables updating the <I>entry password</I> or <I>database password</I> via prompt instead of as command line argument
@@ -234,9 +246,9 @@ Applicable options
 <DT>
 <B>-x</B> <I>database password</I>
 <DT>
-<B>-c</B> <I>cipher</I> - Initializes a password database with cipher <I>cipher</I>
+<B>-c</B> <I>first-cipher:second-cipher</I> - Initializes a password database with cascaded encryption of 'first-cipher' into 'second-cipher'
 <DT>
-<B>-H</B> <I>digest</I> - Initializes a password database with digest <I>digest</I>.
+<B>-H</B> <I>first-digest:second-digest</I> - Derives keys for ciphers with digests 'first-digest' for 'first-cipher' and 'second-digest' for 'second-cipher
 <DT>
 <B>-C</B> send <I>new entry password</I> to clipboard (useful if randomly generated)
 <DT>
@@ -358,9 +370,9 @@ updates database password. Read via prompt. Cannot be supplied via commandline.
 <DT>
 <B>-x</B> <I>database password</I> (the current database password to decrypt/with)
 <DT>
-<B>-c</B> <I>cipher</I> - Update to <I>cipher</I>
+<B>-c</B> <I>first-cipher:second-cipher</I> - Updates algorithms in cascade
 <DT>
-<B>-H</B> <I>digest</I> - Update to <I>digest</I>
+<B>-H</B> <I>first-digest:second-digest</I> - Update digests used for cascaded algorithms' KDFs
 </DL>
 </DL>
   <A HREF="#index">Back To Index</A>
@@ -376,75 +388,46 @@ updates database password. Read via prompt. Cannot be supplied via commandline.
 <H3>Camellia</H3>
 
 <P>
-<DD>Camellia was chosen as the 1st algorithm in the cascade simply because it is certified by the European Union's &quot;NESSIE&quot; and Japan's &quot;CRYPTREC&quot;, and from all cursory research, is comparable to AES. The code can be easily modified to select a differnt algorithm: Simply search for &quot;camellia-256-ofb&quot; and replace it with any valid OpenSSL cipher name. Later versions will make the 1st algorithm selectable by command-line option like the 2nd is.
+<DD>Camellia was chosen as the 1st algorithm in the cascade by default simply because it is certified by the European Union's &quot;NESSIE&quot; and Japan's &quot;CRYPTREC&quot;, and from all cursory research, is comparable to AES.  AES could have been used twice, as long as each encipherment of AES used an unrelated and independent key.  If not, in CFB/CTR/OFB modes, the AES encryption would be reversed by the subsequent AES encryption if the same key was used.  Even though two distinct keys are generated, using two distinct algorithms means there is virtually no chance of the keystreams used for each encipherment being closely related.  A user can still select to double-encrypt with one algorithm and remain secure, but cascaded encryption with two distinct algorithms and two distinct keys is slightly more secure in the sense it can better prevent related keystreams leaking plain-text data into the final encipherment.
 <P>
   <A HREF="#index">Back To Index</A>
 <A NAME="lbAN">&nbsp;</A>
-<H3>Reccomended Modes</H3>
+<H3>CFB, OFB and CTR Modes</H3>
 
 <P>
-<B>Whichever 2nd algorithm is chosen for the cascade, it should be used in OFB or CTR mode.</B>  
+<B>The program will enforce CFB, OFB or CTR modes.</B>  
 <P>
-The reason being is that these modes effectively turn block ciphers into stream ciphers, and the reason we would want that in this context is because using two stream ciphers in cascading encryption makes the resulting encryption at least as hard to break as the strongest algorithm.  Otherwise, if a mode like CBC is used, certain chosen plain-text attacks may be feasible to conduct against the 2nd algorithm in the cascade.  One such attack is known as a meet-in-the-middle attack, but as long as the cascaded algorithms are both stream ciphers, this attack is not feasible (Schneier).
-<P>
-One caveat to using these modes is that the OpenSSL routines don't check for decryption error with them, and so entering an incorrect password will not prompt the user with a &quot;Wrong key&quot; message like other modes would.  Instead, OpenSSL will decrypt the ciphertext with the incorrect key, and then the MAC will fail because the resulting camellia cipher-text will not match what was generated by HMAC. This makes it difficult to distinguish between an incorrect password, and data integrity issues; if you are confident you are entering the correct password, assume it is a data integrity issue.
+These modes effectively turn block ciphers into stream ciphers, and the reason we would want that in this context is because using two stream ciphers in cascading encryption makes the resulting encryption at least as hard to break as the strongest algorithm (Schneier).  Otherwise, if a mode like CBC is used, certain chosen plain-text attacks (e.g. meet-in-the-middle) may be feasible to conduct against the 2nd algorithm in the cascade.
 <P>
   <A HREF="#index">Back To Index</A>
 <A NAME="lbAO">&nbsp;</A>
 <H3>OpenSSL Ciphers</H3>
 
 <P>
-The encryption algorithm used by OpenSSL can be chosen between the ciphers provided by the high-level functions in the <I><A HREF="/cgi-bin/man/man2html?3+evp">evp</A>(3)</I> library. By default the program uses 256-bit AES in CTR mode, using the <I><A HREF="/cgi-bin/man/man2html?3+EVP_BytesToKey">EVP_BytesToKey</A>(3)</I> function to derive the key (see <I><A HREF="/cgi-bin/man/man2html?3+EVP_BytesToKey">EVP_BytesToKey</A>(3)</I> for details), and the SHA512 digest algorithm therein. 
+The encryption algorithm used by OpenSSL can be chosen between the ciphers provided by the high-level functions in the <I><A HREF="https://www.openssl.org/docs/man1.0.2/crypto/evp.html">evp</A>(3)</I> library. By default the program uses 256-bit camellia in OFB mode followed by 256-bit AES in CTR mode, using the <I><A HREF="https://www.openssl.org/docs/man1.0.2/crypto/EVP_BytesToKey.html">EVP_BytesToKey</A>(3)</I> function to derive distinct keys (see <I><A HREF="https://www.openssl.org/docs/man1.0.2/crypto/EVP_BytesToKey.html">EVP_BytesToKey</A>(3)</I> for details), and the whirlpool SHA512 digest algorithm (respectively) for the KDF.
 <P>
-The EVP library provides access to many different blocking modes as well as different cipher algorithms. The choice of which of these respective algorithms to use was made available simply because it was possible to with ease.  For this program's use, AES-256 in CTR mode with SHA512 digests is the strongest configuration available using NIST standards.  Otherwise, blowfish (in OFB) and whirlpool may be an alternative open-source configuration; the rationale to use these could be that both algorithms are slow, so it would make bruteforcing against them slower, or not trusting national encryption standards, etc.  Whatever your rationale for preferring one algorithm over the other, the program will allow it. Just be sure to use it in OFB or CTR mode.
-<P>
-There are also some exotic digest options such as &quot;RSA encrypted SHA512&quot; which might provide extra security over SHA512 alone.  However, OpenSSL's documentation is not clear on what this entails or how it should be implemented, so it is probably safer to use the more vanilla offerings.
-<P>
-There are a number of cipher options listed that do not work, for reasons that were not analyzed. Priority wasn't given to making these options function.
-<P>
-<DL COMPACT><DT><DD>
-aes-128-ccm
-<P>
-aes-128-gcm
-<P>
-<P>
-aes-192-ccm
-<P>
-aes-192-gcm
-<P>
-aes-256-ccm
-<P>
-aes-256-gcm
-<P>
-des-ede3-cfb1
-<P>
-id-aes128-wrap
-<P>
-id-aes192-wrap
-<P>
-id-aes256-wrap
-</DL>
-
+There are also some exotic digest options such as &quot;RSA encrypted SHA512&quot; which might provide extra security over SHA512 alone.  However, OpenSSL's documentation is not clear on what this entails or how it should be implemented, so it is probably safer to use the more vanilla offerings. Whirlpool and SHA512 were chosen because they both provide 64-byte hashes, they are secure and well peer-reviewed, and this will also help prevent any keystream relation.
 <P>
   <A HREF="#index">Back To Index</A>
 <A NAME="lbAP">&nbsp;</A>
 <H3>Key Derivation</H3>
 
 <P>
-The key derivation is done by <I><A HREF="/cgi-bin/man/man2html?3+EVP_BytesToKey">EVP_BytesToKey</A>(3)</I> which is described in detail in <I><A HREF="/cgi-bin/man/man2html?3+EVP_BytesToKey">EVP_BytesToKey</A>(3)</I> and in brief in <I><A HREF="/cgi-bin/man/man2html?3+evp">evp</A>(3)</I>:
+The key derivation is done by <I><A HREF="https://www.openssl.org/docs/man1.0.2/crypto/EVP_BytesToKey.html">EVP_BytesToKey</A>(3)</I> which is described in detail in <I><A HREF="https://www.openssl.org/docs/man1.0.2/crypto/EVP_BytesToKey.html">EVP_BytesToKey</A>(3)</I> and in brief in <I><A HREF="https://www.openssl.org/docs/man1.0.2/crypto/evp.html">evp</A>(3)</I>:
 <P>
 <DL COMPACT><DT><DD>
 The EVP_BytesToKey function provides some limited support for password based encryption. Careful selection of the parameters will provide a PKCS#5 PBKDF1 compatible implementation. However, new applications should not typically use this (preferring, for example, PBKDF2 from PCKS#5).
 </DL>
 
 <P>
-However since the default configuration uses SHA512 instead of MD5, and the digest can be user specified, this means it does not necessarily meet the PBKDF1 standards.  The decision not to use PBKDF2 was made because the EVP library KDF automatically generates appropriate keyring material for the specified ciphers.  Some use IVs and some don't, and some require different key lengths.  The <I><A HREF="/cgi-bin/man/man2html?3+EVP_BytesToKey">EVP_BytesToKey</A>(3)</I> function handles all that automatically.  Meanwhile it could be argued that SHA512 is much more impervious to collisions than MD5 so there's no reason to believe this implementation is less secure than PBKDF1 due to the use of a stronger digest algorithm.
+However since the default configuration uses Whirlpool and SHA512 (for the 1st and 2nd algorithm's keys) instead of MD5, and the digest can be user specified, this means it does not necessarily meet the PBKDF1 standards.  The decision not to use PBKDF2 was made because the EVP library KDF automatically generates appropriate keyring material for the specified ciphers.  Some use IVs and some don't, and some require different key lengths.  The <I><A HREF="https://www.openssl.org/docs/man1.0.2/crypto/EVP_BytesToKey.html">EVP_BytesToKey</A>(3)</I> function handles all that automatically.  Meanwhile it could be argued that SHA512 is much more impervious to collisions than MD5 so there's no reason to believe this implementation is less secure than PBKDF1 due to the use of a stronger digest algorithm.
 <P>
+	  <A HREF="#index">Back To Index</A>
 <A NAME="lbAQ">&nbsp;</A>
 <H3>CSPRNG</H3>
 
 <P>
-The EVP library also provides access to OpenSSL's CSPRNG as described in <I><A HREF="/cgi-bin/man/man2html?3+RAND">RAND</A>(3)</I>.  The <I><A HREF="/cgi-bin/man/man2html?3+RAND_bytes">RAND_bytes</A>(3)</I> function is what fills the buffers with pseudorandomness, generates random passwords, and generates the salt which generates camellia's nonce as well.
+The EVP library also provides access to OpenSSL's CSPRNG as described in <I><A HREF="https://www.openssl.org/docs/manmaster/man7/RAND.html">RAND</A>(3)</I>.  The <I><A HREF="https://www.openssl.org/docs/manmaster/man7/RAND.html_bytes">RAND_bytes</A>(3)</I> function is what fills the buffers with pseudorandomness, generates random passwords, and generates the salt which generates camellia's nonce as well.
 <P>
   <A HREF="#index">Back To Index</A>
 <A NAME="lbAR">&nbsp;</A>
@@ -468,44 +451,40 @@ In the classic Alice and Bob model, if Bob does not trust Alice's cipher, he can
 <P>
 The primary purpose of the cascaded encryption in this program, however, is mainly to make the attack on its temporary files less practical than other side-channel attacks. Some argue that a cascaded cipher may be more susceptible to chosen plain-text attacks, notably meet-in-the-middle attacks. However, according to Bruce Schneier in &quot;Applied Cryptography&quot;, that applies mostly to the cipher-block chaining mode. As long as the first and second algorithms in the cascade are both stream ciphers (or implemented in a mode that effectively makes them stream ciphers), then the combination of the two is at least as strong as the strongest algorithm, and not susceptible to meet-in-the-middle attacks.
 <P>
-Therefore if camellia adds no significant cryptographic strength, then the combination of the two is still at least as strong as the second cipher used. If some vulnerability in camellia was exploited, the cipher-text will only be as vulnerable as the second algorithm used by OpenSSL.  The default implementation uses AES in CTR mode as the 2nd algorithm, effectively making it a stream cipher. That means the password database's encryption will be at least as strong as AES since camellia is implemented in OFB mode, also making it work as a stream cipher. Because OFB and CTR mode make a cipher malleable, the cipher-text generated by camellia is verified by Message Authentication Code generated with a secure HMAC function.
+Therefore if the 2nd algorithm adds no significant cryptographic strength, then the combination of the two is still at least as strong as the 1st algorithm used, or vise versa. If some vulnerability in the 1st algorithm were discovered, the cipher-text will only be as vulnerable as the 2nd algorithm used.  The default implementation uses camellia in OFB mode as the 1st algorithm, and AES in CTR mode as the 2nd algorithm, effectively making them both stream ciphers. Because OFB and CTR mode make a cipher malleable, the cipher-text generated by camellia is verified by a Message Authentication Code generated with a secure HMAC function to guard against chosen cipher-text attack.
 <P>
   <A HREF="#index">Back To Index</A>
 <A NAME="lbAU">&nbsp;</A>
-<H3>Enveloped Encryption Concept</H3>
+<H3>Envelope Concept</H3>
 
 <P>
-This program conceptualizes the cryptographic concept of cascading and authenticated encryption as a figurative analogy involving envelopes. Not to be confused with how OpenSSL uses the concept, which is the name sake for the EVP functions.
+Note: This program's conceptualization of envelopes is unrelated to OpenSSL's asymmetric encryption functions with similar names provided by the EVP library.
 <P>
-The original plain-text message (the non-encrypted password database) is ran through HMAC-SHA512 to create a Message Authentication Code before being encrypted with the enveloped (first) algorithm, camellia-256-OFB. The camellia cipher-text message and the MAC are then placed together inside of an &quot;envelope&quot;.  Therefore, the program uses two primary functions, <I>openEnvelope()</I> and <I>sealEnvelope()</I> which contain the enveloping (second) algorithm's routines to &quot;seal&quot; the camellia cipher-text message and MAC into an &quot;envelope&quot;, or &quot;open&quot; an envelope containing them.
+The cipher-text of the 1st algorithm is ran through HMAC-SHA512 to create a Message Authentication Code before being encrypted with the 2nd algorithm. The 1st algorithm’s cipher-text and the MAC are then placed together inside of an &quot;envelope&quot;.  Therefore, the 2nd algorithm is driven by two primary functions, <I>openEnvelope()</I> and <I>sealEnvelope()</I> which contain the 2nd algorithm's routines to &quot;seal&quot; the 1st algorithm's cipher-text message and MAC into an &quot;envelope&quot;, or to &quot;open&quot; an envelope containing them.
 <P>
-<I>sealEnvelope()</I> is used to encrypt the camellia ciphertext with the enveloping (second) algorithm after a database is created or modified.  The plain-text (user input and the padded buffers ) is ran through HMAC-SHA512 before encryption to create the MAC, then the MAC is concatenated to the camellia ciphertext before being passed to <I>sealEnvelope()</I> and encrypted with the enveloping (second) algorithm to form the final password database.  The encrypted password database file can be considered the &quot;envelope&quot; we're opening and sealing. <I>openEnvelope()</I> decrypts the cipher-text data created by OpenSSL (the second, or &quot;enveloping&quot; cipher), checks this with HMAC against the MAC, and if it matches, passes the camellia data to the rest of the program functions for decryption and processing.
+<I>sealEnvelope()</I> is used to encrypt the 1st algorithm’s ciphertext (the password database created from user input and padded buffers) with the 2nd algorithm to create an encrypted &quot;envelope&quot; containing the encrypted password database.  The cipher-text of the 1st algorithm is ran through HMAC-SHA512 to create the MAC, then the MAC is concatenated to the ciphertext before being passed to <I>sealEnvelope()</I> and encrypted again with the 2nd algorithm.  The resulting file can be considered the &quot;envelope&quot; we're opening and sealing, which contains the encrypted password database inside. <I>openEnvelope()</I> decrypts the cipher-text data created by the 2nd algorithm, the envelope, and then passes the 1st algorithm's cipher-text, the encrypted password database, on to be checked by HMAC-SHA512.  If the MAC generated matches the MAC attached to the cipher-text, it is passed on for decryption and further processing by the 1st algorithm and the application's operation modes.  Once modifications are complete, the new message (the encrypted database) is passed to <I>sealEnvelope()</I> to form the new &quot;envelope&quot;.
 <P>
   <A HREF="#index">Back To Index</A>
 <A NAME="lbAV">&nbsp;</A>
-<H3>Encryption and Authentication Composition</H3>
+<H3>Authentication Composition</H3>
 
 <P>
-When using authentication codes, there are three distinct configurations in which one can encrypt and authenticate.  There is Authenticate-and-Encrypt, Authenticate-then-Encrypt, and Encrypt-then-Authenticate.  Must of the consensus on the subject would suggest that Encrypt-then-Authenticate is the most secure method due to theoretical and practical exploitation of the other two methods.
+This program uses the Encrypt-then-MAC form of authentication composition on the 1st algorithm.  With this composition, the program uses HMAC-SHA512 to generate a MAC on the cipher-text produced by the 1st algorithm. This MAC is concatenated to the end of the 1st algorithm's cipher-text before the whole combination of message and MAC is encrypted by the 2nd algorithm.  When the 1st algorithm is ready to receive the 2nd algorithm’s decrypted plaintext ( which is also the 1st algorithm's cipher-text) the program will then run HMAC-SHA512 against the message data, and check it against the attached MAC. If the attached MAC doesn't match the MAC generated by the message data (meaning the 1st algorithm’s cipher-text was modified), then no further decryption is done by the 1st algorithm, and the program exits instead.
 <P>
-However, with this implementation of temporary files, the Encrypt-then-Authenticate approach did not prove to protect against simulated chosen-ciphertext attacks.  When spoofed ciphertext was inserted into the temporary files to simulate an attack, the Encrypt-then-Authenticate composition still allowed erroneous ciphertext bits to be inserted and decrypted.  As a more catastrophic result, the changes to the ciphertext were in some cases used to modify the camellia data, and the resulting password database was corrupted.
-<P>
-Using the Authenticate-and-Encrypt form of composition, spoofing of the ciphertext in the temporary files was detected by the MAC upon decryption of the camellia data, and then no further processing took place.  Therefore the temporary files can be injected with any spoofed data while open, but these changes will not be allowed to corrupt the password database unless the MAC was accurately spoofed, but measures to prevent that are described in the <B>Temporary Files vs Memory Buffers</B> section below.
-<P>
-The primary flaw of the Authenticate-and-Encrypt format is that the MAC is written to the end of the file unencrypted, potentiating a leak of information about the plain-text if the one-way hash function leaks information.  However, this program uses a secure HMAC function provided by OpenSSL.  As well, there is the obvious fact that the camellia data and MAC will then be encrypted with AES in the final ciphter-text.
+Using authentication on the 1st algorithm encryptions alone still means the program is secure against chosen cipher-text attack, but not necessarily to adaptive chosen cipher-text attacks (Green). Ideally, a change to the cipher-text of the 2nd algorithm should correspond to a change in the cipher-text of the 1st algorithm that will be detected with the MAC.  However, if the 2nd algorithm used something like CBC, changes to its padding could be accepted by the 2nd algorithm, without detectable changes made to the cipher-text of the 1st.  Since CFB, OFB or CTR mode is enforced, changes to the 2nd algorithm's cipher-text will force corresponding changes in the 1st algorithm’s cipher-text, which will be detectable by HMAC.
 <P>
   <A HREF="#index">Back To Index</A>
 <A NAME="lbAW">&nbsp;</A>
 <H3>Temporary Files vs Memory Buffers</H3>
 
 <P>
-The program uses temporary files to store and process data, rather than operate solely in memory. camellia-256-OFB prevents that data from being sent to disk in plain-text. Data remanence issues of using temporary files to store the data for processing are obvious, and the Schneier 7-Pass method is used to erase sensitive data from files before exit.  The program cleans up these files, as well as buffers that were storing sensitive information, upon closing or receiving SIGINT or some other error. The temporary files are also protected by the authenticated encryption described above.
+The program uses temporary files to store and process data, rather than operate solely in memory. camellia-256-OFB (or whatever else is chosen as the 1st algorithm) prevents that data from being sent to disk in plain-text. Data remanence issues of using temporary files to store the data for processing are obvious, and the Schneier 7-Pass method is used to erase sensitive data from files before exit; though this is redundant as the data is already encrypted.  The program cleans up these files, as well as buffers that were storing sensitive information, upon closing or receiving SIGINT or some other error. <I>OPENSSL_cleanse()</I> is used to ensure sanitation calls aren't optimized away by the compiler. The temporary files are also protected by the authenticated encryption described above.
 <P>
-The temporary files are also given a random name that is of a random length, and with read/write permissions only for the file owner.  Despite this, it is still trivial to intercept data from these with elevated priveleges. To mitigate this, authenticated encryption helps protect against man-in-the-middle attacks attempting to spoof cipher-text data on its way from disk to memory. The attacker must be able to predict which random filename contains which data in order to spoof cipher-text and the checksum, and they would have to somehow time and automate such an attack.
+The temporary files are also given a random name that is of a random length, and with read/write permissions only for the file owner.  Despite this, it is still trivial to modify, intercept or inject data into or out of the program via the temporary files if an attacker has elevated privileges. Authenticated encryption also helps protect against man-in-the-middle/chosen-cipher-text attacks attempting to modify cipher-text data on its way from disk to memory. In addition the random file names means an attacker must be able to predict which file contains which data in order to forge cipher-text and the accompanied MAC, and they would have to somehow time and/or automate such an attack.
 <P>
-Writing the program to function solely in memory would not necessarily make the program more secure, especially not in respect to any circumstance that would make storing the information to temporary files vulnerable (i.e. an attacker has root access to the machine the program runs on). At best it would only make the information harder to access without a filesystem abstraction; an attacker could write a simple shell script to intercept sensitive data from temp files, but would need to write something more sophisticated to access it from memory buffers. On the other hand, if the information in those temp files is encrypted, suddenly the level of sophistication needed to exploit them goes up.
+Writing the program to function solely in memory would not necessarily make the program more secure, especially not in respect to any circumstance that would make storing the information to temporary files vulnerable (i.e. an attacker has root access to the machine the program runs on). At best it would only make the information harder to access without a filesystem abstraction; an attacker could write a simple shell script to intercept data into temp files, but would need to write something more sophisticated to access it from memory buffers. On the other hand, if the information in those temp files is encrypted, suddenly the level of sophistication needed to exploit them goes up.
 <P>
-With all that in mind, while operating solely in memory may seem much more secure superficially, the vulnerability of leaving the data in temporary files is only relevant in a situation where storage in memory is mutually vulnerable. Even then, camellia protects the secrets of the plain-text, HMAC protects the integrity of the temp files from tampering, and both effectively makes an attack against the temporary files no simpler (and probably much more complicated) than an attack against program memory.
+With all that in mind, while operating solely in memory may seem much more secure superficially, the vulnerability of leaving the data in temporary files is only relevant in a situation where storage in memory is mutually vulnerable. Even then, encryption protects the secrets of the plain-text in the temp files, and authentication protects the temp files from tampering, and both effectively make an attack against the temporary files no simpler (and probably much more complicated) than an attack against program memory.
 <P>
   <A HREF="#index">Back To Index</A>
 <A NAME="lbBC">&nbsp;</A>
@@ -519,10 +498,10 @@ passmanager -a &quot;gmail : myemail@gmail.com&quot; -p gen -l 32 -f ./passwords
 </DL>
 
 <P>
-Change the encryption and/or digest used for the password database
+Change the encryption to encipher blowfish into camellia, and derive the key for blowfish with the whirlpool digest algorithm, and the key for camellia with sha512
 <P>
 <DL COMPACT><DT><DD>
-passmanager -U -c blowfish -H whirlpool -f ./passwords
+passmanager -U -c blowfish-ofb:camellia-256-ofb -H whirlpool:sha512 -f ./passwords
 </DL>
 
 <P>
@@ -550,7 +529,7 @@ passmanager -U -f ./passwords
 Or you could do both in one command
 <P>
 <DL COMPACT><DT><DD>
-passmanager -U -c aes-256-cbc -H sha512 -P -f ./passwords
+passmanager -U -c camellia-256-ofb:aes-256-ctr -H whirlpool:sha512 -P -f ./passwords
 </DL>
 
 <P>
@@ -635,7 +614,9 @@ passmanager -u allpasses -p gen -f ./passwords
   <A HREF="#index">Back To Index</A>
 <A NAME="lbBD">&nbsp;</A>
 <H2>BUGS</H2>
-
+<P>
+Dead-store elimination means that some of the sensitive material in memory buffers may not be able to be cleared.  The makefile provided disables optimization, and OPENSSL_cleanse is used if a user wishes to implement optimzation anyway.  Despite that, dead-store elimination has been found to be present in OpenSSL &lt;=1.0.1q itself as well.
+<P>
 <P>
 See <A HREF="#lbAW">YAXA Implementation Flaw</A>
 <P>
