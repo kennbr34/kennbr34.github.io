@@ -62,7 +62,7 @@ New passwords can be randomly generated when creating or updating account creden
 The program pays special attention to minimize the amount user passwords are displayed on screen or stored in memory, and allows them to be sent directly to the clipboard (via xclip). Allowing the passwords to be sent directly to the clipboard means adding, updating or retrieving a password can be done without it ever being visible on the screen. Even if a user must display an entry's password to verify it, only that pass can be printed, in order to prevent the entire database being displayed on screen.  Authenticated encryption protects the database against both data corruption and tampering.
 <P>
 <P>
-Account credentials are stored with cascading encryption. First 256-bit camellia is used in OFB mode, and then camellia's cipher-text data is further encrypted using OpenSSL's EVP routines. Using OpenSSL's EVP functions also enables the use of any encryption and digest algorithm supported by  the EVP interface.  For example, encryption can be done with blowfish, and the KDF can use the whirlpool digest algorithm.  The default 2nd algorithm in the cascade is 256-bit AES in CTR mode.
+Account credentials are stored with cascading encryption. First 256-bit Camellia is used in OFB mode, and then Camellia's cipher-text data is further encrypted with 256-bit AES in CTR mode, both algorithms using OpenSSL's EVP routines. Using OpenSSL's EVP functions also enables the use of any encryption and digest algorithm in the EVP interface that supports CFB, OFB or CTR mode.  For example, encryption can be done with blowfish in OFB, and the KDF can use the whirlpool digest algorithm.
 <P>
 <P>
 User input is stored in 512 byte buffers padded by cryptographically strong pseudorandom data: One for an entry's name, and the other for that entry's password.
@@ -106,14 +106,14 @@ With this format and the modes provided, the user can easily and securely manage
 <br>
 Automake Tarballs:
 <br>
-<A HREF="https://github.com/kennbr34/passmanager/archive/2.1.1.tar.gz">2.1.1 tarball</A> - without YAXA (replaced with OpenSSL ciphers)
+<A HREF="https://github.com/kennbr34/passmanager/archive/2.1.2.tar.gz">2.1.2 tarball</A> - without YAXA (replaced with OpenSSL ciphers)
 <br>
 <A HREF="https://github.com/kennbr34/passmanager/archive/1.24.1.tar.gz">1.24.1 tarball</A> - with YAXA (homebrewed crypto)
 <br>
 <br>
 C Source Files:
 <br>
-  <A HREF="https://raw.githubusercontent.com/kennbr34/passmanager/master/src/passmanager.c">passmanager.c</A> - 2.1.1
+  <A HREF="https://raw.githubusercontent.com/kennbr34/passmanager/master/src/passmanager.c">passmanager.c</A> - 2.1.2
 <br>
   <A HREF="https://raw.githubusercontent.com/kennbr34/passmanager/1.24.1/src/passmanager.c">passmanager.c</A> - 1.24.1
 <br>
