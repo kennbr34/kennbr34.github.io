@@ -40,7 +40,7 @@
 <DT><A HREF="#lbAU">Enveloped Encryption Concept</A><DD>
 <DT><A HREF="#lbAV">Encryption and Authentication Composition</A><DD>
 <DT><A HREF="#lbAW">Temporary Files vs Memory Buffers</A><DD>
-<DT><A HREF="#lbAW">Memory Locking, Core-Dump and Process-Trace Prevention</A><DD>
+<DT><A HREF="#lbAX">Memory Locking, Core-Dump and Process-Trace Prevention</A><DD>
 </DL>
 <DT><A HREF="#lbBC">EXAMPLES</A><DD>
 <DT><A HREF="#lbBD">BUGS</A><DD>
@@ -455,7 +455,7 @@ Writing the program to function solely in memory would not necessarily make the 
 With all that in mind, while operating solely in memory may seem much more secure superficially, the vulnerability of leaving the data in temporary files is only relevant in a situation where storage in memory is mutually vulnerable. Even then, encryption protects the secrets of the plain-text in the temp files, and authentication protects the temp files from tampering, and both effectively make an attack against the temporary files no simpler (and probably much more complicated) than an attack against program memory.
 <P>
   <A HREF="#index">Back To Index</A>
-<A NAME="lbAW">&nbsp;</A>
+<A NAME="lbAX">&nbsp;</A>
 <H3>Memory Locking, Core-Dump and Process-Trace Prevention</H3>
 
 <P>
