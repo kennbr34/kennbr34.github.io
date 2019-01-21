@@ -43,8 +43,6 @@
 <DT><A HREF="#lbAX">Memory Locking, Core-Dump and Process-Trace Prevention</A><DD>
 </DL>
 <DT><A HREF="#lbBC">EXAMPLES</A><DD>
-<DT><A HREF="#lbBD">BUGS</A><DD>
-<DT><A HREF="#lbBE">REFERENCES</A><DD>
 <DT><A HREF="#lbBF">SEE ALSO</A><DD>
 </DL>
 
@@ -586,33 +584,6 @@ passmanager -u allpasses -p gen -f ./passwords
 </DL>
 
 <P>
-  <A HREF="#index">Back To Index</A>
-<A NAME="lbBD">&nbsp;</A>
-<H2>BUGS</H2>
-<P>
-Dead-store elimination means that some of the sensitive material in memory buffers may not be able to be cleared.  The makefile provided disables optimization, and OPENSSL_cleanse is used if a user wishes to implement optimzation anyway.  Despite that, dead-store elimination has been found to be present in OpenSSL &lt;=1.0.1q itself as well.
-<P>
-<P>
-See <A HREF="#lbAW">YAXA Implementation Flaw</A>
-<P>
-  <A HREF="#index">Back To Index</A>
-<A NAME="lbBE">&nbsp;</A>
-<H2>REFERENCES</H2>
-
-<P>
-The author consulted several reference sources in order to design and describe the cryptographic function of this program.
-<P>
-<I>&quot;Applied Cryptography,&quot;</I> Bruce Schneier
-<P>
-<I>&quot;Serious Cryptography,&quot;</I> Jean-Philippe Aumasson
-<P>
-<I>&quot;Cryptography Engineering,&quot;</I> Ferguson, Schneier, Kohno
-<P>
-<I>&quot;Cryptography Theory and Practice 4th Ed,&quot;</I> Stinson, Paterson
-<P>
-<I>&quot;Handbook of Applied Cryptography,&quot;</I> Alfred J. Menezes
-<P>
-<A NAME="lbBF">&nbsp;</A>
   <A HREF="#index">Back To Index</A>
 <H2>SEE ALSO</H2>
 
