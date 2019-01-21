@@ -385,7 +385,7 @@ These modes effectively turn block ciphers into stream ciphers, and the reason w
 <H3>OpenSSL Ciphers</H3>
 
 <P>
-The encryption algorithm used by OpenSSL can be chosen between the ciphers provided by the high-level functions in the <I><A HREF="https://www.openssl.org/docs/man1.0.2/crypto/evp.html">evp</A>(3)</I> library. By default the program uses 256-bit camellia in OFB mode followed by 256-bit AES in CTR mode, using the <I><A HREF="https://www.openssl.org/docs/man1.0.2/crypto/EVP_BytesToKey.html">EVP_BytesToKey</A>(3)</I> function to derive distinct keys (see <I><A HREF="https://www.openssl.org/docs/man1.0.2/crypto/EVP_BytesToKey.html">EVP_BytesToKey</A>(3)</I> for details), and the whirlpool SHA512 digest algorithm (respectively) for the KDF.
+The encryption algorithm used by OpenSSL can be chosen between the ciphers provided by the high-level functions in the <I><A HREF="https://www.openssl.org/docs/man1.0.2/crypto/evp.html">evp</A>(3)</I> library. By default the program uses 256-bit camellia in OFB mode followed by 256-bit AES in CTR mode, using the <I><A HREF="https://www.openssl.org/docs/man1.1.0/crypto/PKCS5_PBKDF2_HMAC.html">PKCS5_PBKDF2_HMAC</A>(3)</I> function to derive distinct keys (see <I><A HREF="https://www.openssl.org/docs/man1.1.0/crypto/PKCS5_PBKDF2_HMAC.html">PKCS5_PBKDF2_HMAC</A>(3)</I> for details), and the whirlpool SHA512 digest algorithm (respectively) for the KDF.
 <P>
 There are also some exotic digest options such as &quot;RSA encrypted SHA512&quot; which might provide extra security over SHA512 alone.  However, OpenSSL's documentation is not clear on what this entails or how it should be implemented, so it is probably safer to use the more vanilla offerings. Whirlpool and SHA512 were chosen because they both provide 64-byte hashes, they are secure and well peer-reviewed, and this will also help prevent any keystream relation.
 <P>
@@ -616,7 +616,7 @@ The author consulted several reference sources in order to design and describe t
   <A HREF="#index">Back To Index</A>
 <H2>SEE ALSO</H2>
 
-<A HREF="https://www.openssl.org/docs/manmaster/man1/openssl.html">openssl</A>(1), <A HREF="https://linux.die.net/man/1/xclip">xclip</A>(1), <A HREF="https://www.openssl.org/docs/manmaster/man7/crypto.html">crypto</A>(3), <A HREF="https://www.openssl.org/docs/man1.0.2/crypto/evp.html">evp</A>(3), <A HREF="https://www.openssl.org/docs/man1.0.2/crypto/EVP_BytesToKey.html">EVP_BytesToKey</A>(3), <A HREF="https://www.openssl.org/docs/man1.0.2/crypto/EVP_EncryptInit.html">EVP_EncryptInit</A>(3), <A HREF="https://www.openssl.org/docs/man1.1.0/crypto/PKCS5_PBKDF2_HMAC.html">PKCS5_PBKDF2_HMAC</A>(3), <A HREF="https://www.openssl.org/docs/manmaster/man7/RAND.html">RAND</A>(3), <A HREF="https://www.openssl.org/docs/man1.0.2/crypto/RAND_bytes.html">RAND_bytes</A>(3)
+<A HREF="https://www.openssl.org/docs/manmaster/man1/openssl.html">openssl</A>(1), <A HREF="https://linux.die.net/man/1/xclip">xclip</A>(1), <A HREF="https://www.openssl.org/docs/manmaster/man7/crypto.html">crypto</A>(3), <A HREF="https://www.openssl.org/docs/man1.0.2/crypto/evp.html">evp</A>(3), <A HREF="https://www.openssl.org/docs/man1.0.2/crypto/EVP_EncryptInit.html">EVP_EncryptInit</A>(3), <A HREF="https://www.openssl.org/docs/man1.1.0/crypto/PKCS5_PBKDF2_HMAC.html">PKCS5_PBKDF2_HMAC</A>(3), <A HREF="https://www.openssl.org/docs/manmaster/man7/RAND.html">RAND</A>(3), <A HREF="https://www.openssl.org/docs/man1.0.2/crypto/RAND_bytes.html">RAND_bytes</A>(3)
 <P>
 <P>
 <P>
