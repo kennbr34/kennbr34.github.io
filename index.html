@@ -138,7 +138,7 @@ Special Note: I would advise against using optimization, because the functions w
 
 <P>
 
-passmanager [<B>-a</B> <I>entry name</I> | <B>-r</B> <I>entry name</I> | <B>-d</B> <I>entry name</I> | <B>-u</B> <I>entry name</I> [-n <I>new name</I> ] | <B>-U</B> ] [-p <I>new entry password</I>] [-l <I>random password length</I>] [-x <I>database password</I>] [-c <I>first-cipher:second-cipher</I>] [-H <I>first:digest:second-digest</I>] [ <B>-P</B> ] <B>-f</B> <I>database file</I> [ <B>-C</B> ] [ <B>-s</B> <I>secondss</I> ]
+passmanager [<B>-a</B> <I>entry name</I> | <B>-r</B> <I>entry name</I> | <B>-d</B> <I>entry name</I> | <B>-u</B> <I>entry name</I> [-n <I>new name</I> ] | <B>-U</B> ] [-p <I>new entry password</I>] [-l <I>random password length</I>] [-x <I>database password</I>] [-c <I>first-cipher:second-cipher</I>] [-H <I>first:digest:second-digest</I>] [ <B>-P</B> ] <B>-f</B> <I>database file</I> [ <B>-C</B> ] [ <B>-s</B> <I>seconds</I> ] [ <B>-i</B> <I>iterations</I> ]
 <P>
 <P>
 <A HREF="#index">Back To Index</A>
@@ -193,6 +193,9 @@ Options may have different implications depending on operating mode
 <P>
 
 <B>-s</B> <I>seconds</I> - clear clipboard <I>seconds</I> after instead of default 30
+<P>
+
+<B>-s</B> <I>iterations</I> - reiterate KDF by <I>iterations</I> instead of default 200000
 <P>
 
 <B>-h</B> - Quick usage help
