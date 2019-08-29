@@ -1,53 +1,50 @@
-
-
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML><HEAD><TITLE>ken's passmanager</TITLE>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-</HEAD><BODY>
-  <H1>ken's passmanager</H1>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>ken's passmanager</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head><body>
+  <h1>ken's passmanager</h1>
   
   
   
-<A NAME="index">&nbsp;</A><H2>Index</H2>
-<DL>
-<DT><A HREF="#lbAE">DESCRIPTION</A><DD>
-<DT><A HREF="#lbAB">DOWNLOAD</A><DD>
-<DT><A HREF="#DEPENDENCIES">DEPENDENCIES</A><DD>
-<DT><A HREF="#COMPILATION">COMPILATION</A><DD>
-<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
-<DT><A HREF="#lbAD">OPTIONS SUMMARY</A><DD>
+<a name="index">&nbsp;</a><h2>Index</h2>
+<dl>
+<dt><a href="#lbAE">DESCRIPTION</a></dt><dd>
+</dd><dt><a href="#DOWNLOAD">DOWNLOAD</a></dt><dd>
+</dd><dt><a href="#DEPENDENCIES">DEPENDENCIES</a></dt><dd>
+</dd><dt><a href="#COMPILATION">COMPILATION</a></dt><dd>
+</dd><dt><a href="#lbAC">SYNOPSIS</a></dt><dd>
+</dd><dt><a href="#lbAD">OPTIONS SUMMARY</a></dt><dd>
 
-<DT><A HREF="#lbAF">MODES</A><DD>
-<DL>
-<DT><A HREF="#lbAG">Add mode</A><DD>
-<DT><A HREF="#lbAH">Read mode</A><DD>
-<DT><A HREF="#lbAI">Delete mode</A><DD>
-<DT><A HREF="#lbAJ">Update entry mode</A><DD>
-<DT><A HREF="#lbAK">Update database mode</A><DD>
-</DL>
-<DT><A HREF="#lbAL">OPENSSL NOTES</A><DD>
-<DL>
-<DT><A HREF="#lbAM">Camellia</A><DD>
-<DT><A HREF="#lbAN">Reccomended Modes</A><DD>
-<DT><A HREF="#lbAO">OpenSSL Ciphers</A><DD>
-<DT><A HREF="#lbAQ">CSPRNG</A><DD>
-</DL>
-<DT><A HREF="#lbAR">SECURITY DESIGN NOTES</A><DD>
-<DL>
-<DT><A HREF="#lbAS">Input Padding</A><DD>
-<DT><A HREF="#lbAT">Cascaded Encryption Security</A><DD>
-<DT><A HREF="#lbAU">Enveloped Encryption Concept</A><DD>
-<DT><A HREF="#lbAV">Encryption and Authentication Composition</A><DD>
-<DT><A HREF="#lbAW">Temporary Files vs Memory Buffers</A><DD>
-<DT><A HREF="#lbAX">Memory Locking, Core-Dump and Process-Trace Prevention</A><DD>
-</DL>
-<DT><A HREF="#lbBC">EXAMPLES</A><DD>
-<DT><A HREF="#lbBF">SEE ALSO</A><DD>
-</DL>
+</dd><dt><a href="#lbAF">MODES</a></dt><dd>
+<dl>
+<dt><a href="#lbAG">Add mode</a></dt><dd>
+</dd><dt><a href="#lbAH">Read mode</a></dt><dd>
+</dd><dt><a href="#lbAI">Delete mode</a></dt><dd>
+</dd><dt><a href="#lbAJ">Update entry mode</a></dt><dd>
+</dd><dt><a href="#lbAK">Update database mode</a></dt><dd>
+</dd></dl>
+</dd><dt><a href="#lbAL">OPENSSL NOTES</a></dt><dd>
+<dl>
+<dd>
+</dd><dt><a href="#lbAN">CFB, OFB and CTR Modes</a></dt><dd>
+</dd><dt><a href="#lbAO">OpenSSL Ciphers and Digests</a></dt><dd>
+</dd><dt><a href="#lbAQ">CSPRNG</a></dt><dd>
+</dd></dl>
+</dd><dt><a href="#lbAR">SECURITY AND DESIGN NOTES</a></dt><dd>
+<dl>
+<dt><a href="#lbAS">Input Padding</a></dt><dd>
+</dd><dd>
+</dd><dt><a href="#lbAU">Database Creation and Modification</a></dt><dd>
+</dd><dt><a href="#lbAV">Authenicated Encryption and Associated Data</a></dt><dd>
+</dd><dt><a href="#lbAW">Temporary Files and Memory Sanitation</a></dt><dd>
+</dd><dt><a href="#lbAX">Memory Locking, Core-Dump and Process-Trace Prevention</a></dt><dd>
+</dd></dl>
+</dd><dt><a href="#lbBC">EXAMPLES</a></dt><dd>
+</dd><dt><a href="#SEEALSO">SEE ALSO</a></dt><dd>
+</dd></dl>
 
-  <A NAME="lbAE">&nbsp;</A>
-<H2>DESCRIPTION</H2>
+  <a name="lbAE">&nbsp;</a>
+<h2>DESCRIPTION</h2>
 
 <P>
 passmanager  is an ultra simple, but very secure password management program written in C and making use of OpenSSL's Libcrypto API libraries.  The
@@ -57,10 +54,10 @@ passwords can be written, read, updated or deleted from an encrypted database fi
 New passwords can be randomly generated when creating or updating account credentials. Passwords  can  be  matched by entry name, and printed/updated/deleted in bulk or individually. All password entries in the database can be updated at once with ease. If the user updated/deleted a password they didn't intend to, the program lists which entries were matched and edited, and provides an automatically produced backup file to restore from. The database password and encryption method can be changed at any time.
 <P>
 <P>
-The program pays special attention to minimize the amount user passwords are displayed on screen or stored in memory, and allows them to be sent directly to the clipboard (via xclip), with the password being cleared from the clipboard after 30 seconds. Allowing the passwords to be sent directly to the clipboard means adding, updating or retrieving a password can be done without it ever being visible on the screen. Even if a user must display an entry's password to verify it, only that pass can be printed, in order to prevent the entire database being displayed on screen.  Authenticated encryption protects the database against both data corruption and tampering.
+The program pays special attention to minimize the amount user passwords are displayed on screen or stored in memory, and allows them to be sent directly to the clipboard (via xclip), with the password being cleared from the clipboard after 30 seconds. Allowing the passwords to be sent directly to the clipboard means adding, updating or retrieving a password can be done without it ever being visible on the screen. Even if a user must display an entry's password to verify it, only that pass can be printed, in order to prevent the entire database being displayed on screen.  Authenticated encryption with HMAC protects the database against both data corruption and tampering.
 <P>
 <P>
-Account credentials are stored with cascading encryption. First 256-bit camellia is used in OFB mode, and then camellia's cipher-text data is further encrypted into aes 256-bit in CTR mode. Using OpenSSL's EVP functions also enables the use of any encryption and digest algorithms ( for key derivation ) supported by  the EVP interface.  For example, encryption can be done with blowfish, cascaded into AES, and the KDF can use the whirlpool for blowfish and sha512 for AES.
+Account credentials are encrypted with 256-bit AES in CTR mode with HMAC-SHA512 for authentication. Using OpenSSL's EVP functions also enables the use of any encryption and digest algorithms ( for key derivation using PBKDF2 ) supported by  the EVP interface.
 <P>
 <P>
 User input is stored in 512 byte buffers padded by cryptographically strong pseudorandom data: One for an entry's name, and the other for that entry's password.
@@ -72,10 +69,10 @@ For example, here the user manually delimits the service and the account name
 <P>
 <DL COMPACT><DT><DD>
 service : account : password
-<br>
+<P>
 foobar : foo : passfoo
-<br>
-gmail : account@gmail.com : (*&amp;*UJD83dh
+<P>
+gmail : <A HREF="mailto:account@gmail.com">account@gmail.com</A> : (*&amp;*UJD83dh
 <P>
 </DL>
 
@@ -85,9 +82,9 @@ But any of these are also possible
 <P>
 <DL COMPACT><DT><DD>
 just a user account : password
-<br>
+<P>
 foo - bar : foobar : foobar
-<br>
+<P>
 555 867 5309 : (*&amp;*UJD83dh
 <P>
 </DL>
@@ -95,65 +92,67 @@ foo - bar : foobar : foobar
 <P>
 
 With this format and the modes provided, the user can easily and securely manage the contents of the database.
-  
 <P>
-  <A HREF="#index">Back To Index</A>
-  <A NAME="lbAB">&nbsp;</A>
-<H2>DOWNLOAD</H2>
+
+<a name="DOWNLOAD">&nbsp;</a>
+</p><h2>DOWNLOAD</h2>
   
-<A HREF="https://github.com/kennbr34/passmanager">GitHub</A>
+<a href="https://github.com/kennbr34/passmanager">GitHub</a>
 <br>
-<A HREF="https://github.com/kennbr34/passmanager/archive/master.tar.gz">Automake Tarball</A>
+<a href="https://github.com/kennbr34/passmanager/archive/master.tar.gz">Automake Tarball</a>
 <br>
- <A HREF="https://raw.githubusercontent.com/kennbr34/passmanager/master/src/passmanager.c">Raw C File</A>
+ <a href="https://raw.githubusercontent.com/kennbr34/passmanager/master/src/passmanager.c">Raw C File</a>
 <br>
 
-  <P>
-  <A HREF="#index">Back To Index</A>
+  <p>
+  <a href="#index">Back To Index</a>
   
-<A NAME="DEPENDENCIES">&nbsp;</A>
-<H2>DEPENDENCIES</H2>
-<P>
+<a name="DEPENDENCIES">&nbsp;</a>
+</p><h2>DEPENDENCIES</h2>
+<p>
 OpenSSL development files (1.0.1.g or higher)
 	<br>
 	libcap development files (2.24-12 or higher)
   <br>
 xclip (optional for clipboard functions)
-<P>
-<A HREF="#index">Back To Index</A>
+</p><p>
+<a href="#index">Back To Index</a>
   
-<A NAME="COMPILATION">&nbsp;</A>
-<H2>COMPILATION</H2>
-<P>
-If you don't want to install the automake package contents, and want to compile the binary alone, just link with lcrypto and lcap
-<P>
+<a name="COMPILATION">&nbsp;</a>
+</p><h2>COMPILATION</h2>
+<p>
+If you don't want to install the automake package contents, and want to 
+compile the binary alone, just link with lcrypto and lcap
+</p><p>
 gcc passmanager.c -o passmanager -lcrypto -lcap
-<P>
-Special Note: I would advise against using optimization, because the functions which are used to clear memory of sensitive data may be optimized out.
-  <P>
-  <A HREF="#index">Back To Index</A>
+</p><p>
+Special Note: I would advise against using optimization, because the 
+functions which are used to clear memory of sensitive data may be 
+optimized out.
+  </p><p>
+  <a href="#index">Back To Index</a>
  
-<A NAME="lbAC">&nbsp;</A>
-<H2>SYNOPSIS</H2>
+<a name="lbAC">&nbsp;</a>
+</p><h2>SYNOPSIS</h2>
 
 <P>
 
-passmanager [<B>-a</B> <I>entry name</I> | <B>-r</B> <I>entry name</I> | <B>-d</B> <I>entry name</I> | <B>-u</B> <I>entry name</I> [-n <I>new name</I> ] | <B>-U</B> ] [-p <I>new entry password</I>] [-l <I>random password length</I>] [-x <I>database password</I>] [-c <I>first-cipher:second-cipher</I>] [-H <I>first:digest:second-digest</I>] [ <B>-P</B> ] <B>-f</B> <I>database file</I> [ <B>-C</B> ] [ <B>-s</B> <I>seconds</I> ] [ <B>-i</B> <I>iterations</I> ]
+passmanager <B>-a</B> <I>entry name</I> | <B>-r</B> <I>entry name</I> | <B>-d</B> <I>entry name</I> | <B>-u</B> <I>entry name</I> | <B>-U</B> [-n <I>new name</I> ] [-p <I>new entry password</I>] [-l <I>random password length</I>] [-c <I>cipher</I>] [-H <I>digest</I>] [-i <I>iterations</I> ] [ -P ] [ -C ] [ -s <I>seconds</I> ] [-x <I>database password</I>] <B>-f</B> <I>database file</I>
 <P>
 <P>
-<A HREF="#index">Back To Index</A>
-<A NAME="lbAD">&nbsp;</A>
-<H2>OPTIONS SUMMARY</H2>
+<a href="#index">Back To Index</a>
+<a name="lbAD">&nbsp;</a>
+</p><h2>OPTIONS SUMMARY</h2>
 
 <P>
 
 Options may have different implications depending on operating mode
 <P>
 
-<B>-r</B> <I>entry name</I>&nbsp;- Lookup <I>entry name</I> in <B>Read</B> mode ('allpasses' will print all passes)
+<B>-a</B> <I>entry name</I>&nbsp;- Add <I>entry name</I> in <B>Add</B> mode
 <P>
 
-<B>-a</B> <I>entry name</I>&nbsp;- Add <I>entry name</I> in <B>Add</B> mode
+<B>-r</B> <I>entry name</I>&nbsp;- Lookup <I>entry name</I> in <B>Read</B> mode ('allpasses' will print all passes)
 <P>
 
 <B>-d</B> <I>entry name</I>&nbsp;- Delete <I>entry name</I> in <B>Delete</B> mode
@@ -162,10 +161,10 @@ Options may have different implications depending on operating mode
 <B>-u</B> <I>entry name</I>&nbsp;- Update <I>entry name</I> in <B>Update entry</B> mode
 <P>
 
-<B>-n</B> <I>new name</I>&nbsp;- entry name up to 512 characters (can contain white space or special characters)
+<B>-U - Update database</B> mode
 <P>
 
-<B>-U - Update database</B> mode
+<B>-n</B> <I>new name</I>&nbsp;- entry name up to 512 characters (can contain white space or special characters)
 <P>
 
 <B>-p</B> <I>new entry password</I> - entry password up to 512 characters (don't call to be prompted instead) ('gen' will generate a random password, 'genalpha' will generate a random password with no symbols)
@@ -174,42 +173,40 @@ Options may have different implications depending on operating mode
 <B>-l</B> <I>random password length</I> - makes 'gen' or 'genalpha' generate a password <I>random password length</I> digits long (defaults to 16 without this option)
 <P>
 
-<B>-x</B> <I>database password</I> - To supply database password as command-line argument (not reccomended)
+<B>-c</B> <I>cipher</I> - Specify 'list' for a list of methods available to OpenSSL. Default: aes-256-ctr.
 <P>
 
-<B>-c</B> <I>first-cipher:second-cipher</I> - Specify 'list' for a list of methods available to OpenSSL. Default: camellia-256-ofb:aes-256-ctr.
+<B>-H</B> <I>digest</I> - Specify 'list' for a list of methods available to OpenSSL. Default: sha512.
 <P>
 
-<B>-H</B> <I>first-digest:second-digest</I> - Specify 'list' for a list of methods available to OpenSSL. Default: whirlpool:sha512.
+<B>-i</B> <I>iterations</I> - Specify amount of PBKDF2 to be <I>iterations</I>. Default: 500000
 <P>
 
 <B>-P</B> - In <I>Update entry</I> or <I>Update database</I>  mode (<B>-u</B> and <B>-U</B> respectively) this option enables updating the <I>entry password</I> or <I>database password</I> via prompt instead of as command line argument
 <P>
 
-<B>-f</B> - <I>database file</I> ( must be specified )
-<P>
-
-<B>-C</B> - end <I>entry password</I> directly to clipboard. Clipboard is cleared 30 seconds afterward. (needs xclip)
+<B>-C</B> - send <I>entry password</I> directly to clipboard. Clipboard is cleared 30 seconds afterward. (needs xclip)
 <P>
 
 <B>-s</B> <I>seconds</I> - clear clipboard <I>seconds</I> after instead of default 30
 <P>
 
-<B>-i</B> <I>iterations</I> - reiterate KDF by <I>iterations</I> instead of default 200000
+<B>-x</B> <I>database password</I> - To supply database password as command-line argument (not reccomended)
+<P>
+
+<B>-f</B> - <I>database file</I> ( must be specified )
 <P>
 
 <B>-h</B> - Quick usage help
 <P>
 
-<P>
-  <A HREF="#index">Back To Index</A>
-<A NAME="lbAF">&nbsp;</A>
-<H2>MODES</H2>
+</p><p>
+  <a href="#index">Back To Index</a>
+<a name="lbAF">&nbsp;</a>
+</p><h2>MODES</h2>
 
-<P>
-
-<A NAME="lbAG">&nbsp;</A>
-<H3><B>Add mode</B></H3>
+<a name="lbAG">&nbsp;</a>
+</p><h3><b>Add mode</b></h3>
 
 <P>
 
@@ -228,11 +225,13 @@ Applicable options
 <DT>
 <B>-x</B> <I>database password</I>
 <DT>
-<B>-c</B> <I>first-cipher:second-cipher</I> - Initializes a password database with cascaded encryption of 'first-cipher' into 'second-cipher'
+<B>-c</B> <I>cipher</I> - Initializes a password database with EVP cipher algorithm 'cipher'
 <DT>
-<B>-H</B> <I>first-digest:second-digest</I> - Derives keys for ciphers with digests 'first-digest' for 'first-cipher' and 'second-digest' for 'second-cipher
+<B>-H</B> <I>digest</I> - Derives keys for ciphers with EVP digest algorithm 'digest'
 <DT>
 <B>-C</B> send <I>new entry password</I> to clipboard (useful if randomly generated)
+<DT>
+<B>-i</B> <I>iterations</I> - Specify PBKDF2 iteration amount as <I>iterations</I>.
 <DT>
 <B>-s</B> <I>seconds</I> - clear clipboard <I>seconds</I> after instead of default 30
 </DL>
@@ -240,10 +239,10 @@ Applicable options
 
 <P>
   
-<A HREF="#index">Back To Index</A>
+<a href="#index">Back To Index</a>
 
-<A NAME="lbAH">&nbsp;</A>
-<H3><B>Read mode</B></H3>
+<a name="lbAH">&nbsp;</a>
+</p><h3><b>Read mode</b></h3>
 
 <P>
 
@@ -271,74 +270,76 @@ Applicable options
 </DL>
 
 <P>
-<A HREF="#index">Back To Index</A>
-<A NAME="lbAI">&nbsp;</A>
-<H3><B>Delete mode</B></H3>
+<a href="#index">Back To Index</a>
+<a name="lbAI">&nbsp;</a>
+</p><h3><b>Delete mode</b></h3>
 
-<P>
+<p>
 
-<DD>In <B>Delete</B> mode one or more password entries can be deleted. <I>entry name</I> can be partially or fully matched as in <B>Read</B> mode.
-<P>
+</p></dd><dd>In <b>Delete</b> mode one or more password entries can be deleted. <i>entry name</i> can be partially or fully matched as in <b>Read</b> mode.
+<p>
 
 Applicable options
-<DL COMPACT><DT><DD>
-<B>-x</B> <I>database password</I>
-</DL>
+</p><dl compact="compact"><dt></dt><dd>
+<b>-x</b> <i>database password</i>
+</dd></dl>
 
-<P>
-<A HREF="#index">Back To Index</A>
-<A NAME="lbAJ">&nbsp;</A>
-<H3><B>Update entry mode</B></H3>
+<p>
+<a href="#index">Back To Index</a>
+<a name="lbAJ">&nbsp;</a>
+</p><h3><b>Update entry mode</b></h3>
 
-<P>
+<p>
 
-In <B>Update entry</B> mode one or multiple entries are updated.  As in <B>Read</B> and <B>Add</B> modes, the <I>entry name</I> will be fully or partially matched.
-<P>
+In <b>Update entry</b> mode one or multiple entries are updated.  As in <b>Read</b> and <b>Add</b> modes, the <i>entry name</i> will be fully or partially matched.
+</p><p>
 
-Both the entry name and password can be updated. The new entry name can be supplied via command line only, but the new password can be received via prompt or as a command line argument ( not recommended ).
-<P>
+Both the entry name and password can be updated. The new entry name can 
+be supplied via command line only, but the new password can be received 
+via prompt or as a command line argument ( not recommended ).
+</p><p>
 
-As in <B>Add</B> mode, entering 'gen' for the <I>entry password</I> argument will generate a random password.  This is especially useful for updating old passwords.
-<P>
+As in <b>Add</b> mode, entering 'gen' for the <i>entry password</i> argument will generate a random password.  This is especially useful for updating old passwords.
+</p><p>
 Single new passwords can be sent directly to the clipboard with xclip as well.
-<P>
-All entries can be updated at once with new randomly generated passwords, if <I>entry name</I> is equal to 'allpasses'
-<P>
+</p><p>
+All entries can be updated at once with new randomly generated passwords, if <i>entry name</i> is equal to 'allpasses'
+</p><p>
 
 Applicable options
-<DL COMPACT><DT><DD>
-<B>-P</B>
-updates <I>entry name</I> and <I>entry password</I>, getting <I>new entry password</I> via user input instead of command line (<B>-p</B>)
-<DL COMPACT>
-<DT>
-<B>-p</B> <I>new entry password</I> - update <I>entry name</I> password to <I>new entry password</I>
-<DT>
-<B>-l</B> <I>random password length</I> - makes 'gen' or 'genalpha' generate a password <I>random password length</I> digits long (defaults to 16 without this option)
-<DT>
-<B>-n</B> <I>new name</I> - update <I>entry name</I>  to <I>new name</I>. Without this its assumed you're only changing the password of <I>entry name</I>.
-<DT>
-<B>-x</B> <I>database password</I>
-<DT>
-<B>-C</B> send <I>new entry password</I> directly to clipboard after updating <I>entry name</I>
-<DT>
-<B>-s</B> <I>seconds</I> - clear clipboard <I>seconds</I> after instead of default 30
-</DL>
-</DL>
+</p><dl compact="compact"><dt></dt><dd>
+<b>-P</b>
+updates <i>entry name</i> and <i>entry password</i>, getting <i>new entry password</i> via user input instead of command line (<b>-p</b>)
+<dl compact="compact">
+<dt>
+<b>-p</b> <i>new entry password</i> - update <i>entry name</i> password to <i>new entry password</i>
+</dt><dt>
+<b>-l</b> <i>random password length</i> - makes 'gen' or 'genalpha' generate a password <i>random password length</i> digits long (defaults to 16 without this option)
+</dt><dt>
+<b>-n</b> <i>new name</i> - update <i>entry name</i>  to <i>new name</i>. Without this its assumed you're only changing the password of <i>entry name</i>.
+</dt><dt>
+<b>-x</b> <i>database password</i>
+</dt><dt>
+<b>-C</b> send <i>new entry password</i> directly to clipboard after updating <i>entry name</i>
+</dt><dt>
+<b>-s</b> <i>seconds</i> - clear clipboard <i>seconds</i> after instead of default 30
+</dt></dl>
+</dd></dl>
+
+<p>
+<a href="#index">Back To Index</a>
+<a name="lbAK">&nbsp;</a>
+</p><h3><b>Update database mode</b></h3>
 
 <P>
-<A HREF="#index">Back To Index</A>
-<A NAME="lbAK">&nbsp;</A>
-<H3><B>Update database mode</B></H3>
 
-<P>
-
-<DD>In <B>Update databse</B> mode the password and the underlying OpenSSL encryption of the database can be updated.
+<DD>In <B>Update database</B> mode the password and the underlying OpenSSL encryption of the database can be updated.
 <P>
 
 If option <B>-c</B> or <B>-H</B> given to update the encryption or digest algorithm ( respectively ) then <B>-P</B> is needed to change the database password as well.
 <P>
 
-If only option <B>-U</B> is present, then only the password id updated.
+If only option <B>-U</B> is present, then only the password is updated.
 <P>
 
 The new password can only be received via prompt, and cannot be given on the command line. However the current <I>database password</I> can still be received with the <B>-x</B> option.
@@ -352,132 +353,97 @@ updates database password. Read via prompt. Cannot be supplied via commandline.
 <DT>
 <B>-x</B> <I>database password</I> (the current database password to decrypt/with)
 <DT>
-<B>-c</B> <I>first-cipher:second-cipher</I> - Updates algorithms in cascade
+<B>-c</B> <I>cipher</I> - Updates algorithms
 <DT>
-<B>-H</B> <I>first-digest:second-digest</I> - Update digests used for cascaded algorithms' KDFs
+<B>-H</B> <I>digest</I> - Update digests used
+<DT>
+<B>-i</B> <I>iterations</I> - Update iteration amount used by PBKDF2 to <I>iterations</I>
 </DL>
 </DL>
-  <A HREF="#index">Back To Index</A>
 
 <P>
 
-<P>
-<A NAME="lbAL">&nbsp;</A>
-<H2>OPENSSL NOTES</H2>
+</p><p>
+<a name="lbAL">&nbsp;</a>
+</p><h2>OPENSSL NOTES</h2>
+
+<p>
+	
+<a name="lbAN">&nbsp;</a>
+</p><h3>CFB, OFB and CTR Modes</h3>
 
 <P>
-<A NAME="lbAM">&nbsp;</A>
-<H3>Camellia</H3>
+<DD>The program will enforce CFB, OFB or CTR modes for block ciphers. These modes are enforced to effectively turn any block ciphers into stream ciphers because the program is not designed to handle padding for modes like CBC.
+<P>
+  <a href="#index">Back To Index</a>
+<a name="lbAO">&nbsp;</a>
+</p><h3>OpenSSL Ciphers</h3>
 
 <P>
-<DD>Camellia was chosen as the 1st algorithm in the cascade by default simply because it is certified by the European Union's &quot;NESSIE&quot; and Japan's &quot;CRYPTREC&quot;, and from all cursory research, is comparable to AES.  AES could have been used twice, as long as each encipherment of AES used an unrelated and independent key.  If not, in CFB/CTR/OFB modes, the AES encryption would be reversed by the subsequent AES encryption if the same key was used.  Even though two distinct keys are generated, using two distinct algorithms means there is virtually no chance of the keystreams used for each encipherment being closely related.  A user can still select to double-encrypt with one algorithm and remain secure, but cascaded encryption with two distinct algorithms and two distinct keys is slightly more secure in the sense it can better prevent related keystreams leaking plain-text data into the final encipherment.
+The encryption algorithm used by OpenSSL can be chosen between the ciphers provided by the high-level functions in the <I><A HREF="/cgi-bin/man/man2html?3+evp">evp</A>(3)</I> library. By default the program uses 256-bit AES in CTR mode, using the <I><A HREF="/cgi-bin/man/man2html?3+PKCS5_PBKDF2_HMAC">PKCS5_PBKDF2_HMAC</A>(3)</I> function to derive keys (see <I><A HREF="/cgi-bin/man/man2html?3+PKCS5_PBKDF2_HMAC">PKCS5_PBKDF2_HMAC</A>(3)</I> for details), and the SHA512 digest algorithm. Authenticated ciphers using GCM or CCM are not supported as the program uses HMAC for authentication. The ability to choose cipher algorithms is primarily added incase disparate versions of OpenSSL are installed across different machine, thus making different ciphers available.  For example, ChaCha20 may not be available on one machine while it is on the other.
 <P>
-  <A HREF="#index">Back To Index</A>
-<A NAME="lbAN">&nbsp;</A>
-<H3>CFB, OFB and CTR Modes</H3>
+  <a href="#index">Back To Index</a>
+
+<a name="lbAQ">&nbsp;</a>
+</p><h3>CSPRNG</h3>
 
 <P>
-<B>The program will enforce CFB, OFB or CTR modes.</B>  
+The EVP library also provides access to OpenSSL's CSPRNG as described in <I><A HREF="/cgi-bin/man/man2html?3+RAND">RAND</A>(3)</I>.  The <I><A HREF="/cgi-bin/man/man2html?3+RAND_bytes">RAND_bytes</A>(3)</I> function is what fills the buffers with pseudorandomness, generates random passwords, and generates the salt for PBKDF2.
 <P>
-These modes effectively turn block ciphers into stream ciphers, and the reason we would want that in this context is because using two stream ciphers in cascading encryption makes the resulting encryption at least as hard to break as the strongest algorithm (Schneier).
-<P>
-  <A HREF="#index">Back To Index</A>
-<A NAME="lbAO">&nbsp;</A>
-<H3>OpenSSL Ciphers</H3>
+  <a href="#index">Back To Index</a>
+<a name="lbAR">&nbsp;</a>
+</p><h2>SECURITY AND DESIGN NOTES</h2>
 
+<a name="lbAS">&nbsp;</a>
+</p><h3>Input Padding</h3>
 <P>
-The encryption algorithm used by OpenSSL can be chosen between the ciphers provided by the high-level functions in the <I><A HREF="https://www.openssl.org/docs/man1.0.2/crypto/evp.html">evp</A>(3)</I> library. By default the program uses 256-bit camellia in OFB mode followed by 256-bit AES in CTR mode, using the <I><A HREF="https://www.openssl.org/docs/man1.1.0/crypto/PKCS5_PBKDF2_HMAC.html">PKCS5_PBKDF2_HMAC</A>(3)</I> function to derive distinct keys (see <I><A HREF="https://www.openssl.org/docs/man1.1.0/crypto/PKCS5_PBKDF2_HMAC.html">PKCS5_PBKDF2_HMAC</A>(3)</I> for details), and the whirlpool SHA512 digest algorithm (respectively) for the KDF.
+Input buffers will accept any amount of whitespace or special characters up to 512 characters in length.  The buffers are padded with pseudo-random data from a Cryptographically Strong Pseudo Random Number Generator (CSPRNG). This was done with more consideration than simply providing ample memory for user input. The extra space being padded with pseudo-random data also helps suppress natural-language frequencies, making frequency analysis of the cipher-text less useful.
 <P>
-There are also some exotic digest options such as &quot;RSA encrypted SHA512&quot; which might provide extra security over SHA512 alone.  However, OpenSSL's documentation is not clear on what this entails or how it should be implemented, so it is probably safer to use the more vanilla offerings. Whirlpool and SHA512 were chosen because they both provide 64-byte hashes, they are secure and well peer-reviewed, and this will also help prevent any keystream relation.
-<P>
-  <A HREF="#index">Back To Index</A>
-
-<A NAME="lbAQ">&nbsp;</A>
-<H3>CSPRNG</H3>
-
-<P>
-The EVP library also provides access to OpenSSL's CSPRNG as described in <I><A HREF="https://www.openssl.org/docs/manmaster/man7/RAND.html">RAND</A>(3)</I>.  The <I><A HREF="https://www.openssl.org/docs/manmaster/man7/RAND.html_bytes">RAND_bytes</A>(3)</I> function is what fills the buffers with pseudorandomness, generates random passwords, and generates the salt which generates camellia's nonce as well.
-<P>
-  <A HREF="#index">Back To Index</A>
-<A NAME="lbAR">&nbsp;</A>
-<H2>SECURITY DESIGN NOTES</H2>
-
-<P>
-<A NAME="lbAS">&nbsp;</A>
-<H3>Input Padding</H3>
-
-Input buffers will accept any amount of whitespace or special characters up to 512 characters in length.  The buffers are padded with pseudo-random data from a Cryptographically Strong Pseudo Random Number Generator (CSPRNG). This was done with more consideration than simply providing ample memory for user input.
-<P>
-The extra space being padded with pseudo-random data also helps suppress natural-language frequencies, making frequency analysis of the plain-text less useful. This is because the padding always makes plaintext unique and pseudorandom despite any identical and/or predictable user input.  This also has the effect of lengthening the keystream generated, but without increasing determinism into it with more identical and/or predictable plain-text.
-<P>
-A different cipher-text will be generated for every password database file, even if it's encrypted with the same password, user input, and even the same salt. This is because plain-text will never be the same even with identical user input, due to the pseudo-random buffer padding.  Of course this only applies to the initialization of the database file; subsequent updates of the same file could have repeatable plain-text, so the use of salts and nonces is still necessary.
-<P>
-<A NAME="lbAT">&nbsp;</A>
-<H3>Cascaded Encryption Security</H3>
-
-<P>
-In the classic Alice and Bob model, if Bob does not trust Alice's cipher, he can encrypt his message with his cipher, and then encrypt that cipher-text into a second cipher-text with Alice's cipher.  Alice can then decrypt it using her cipher, and then decrypt the second cipher-text using Bob's cipher.  In this way Bob does not have to trust Alice's cipher, and Alice is unaffected by vulnerabilities in Bob's cipher, and vise versa.  This is most widely known as cascaded encryption.
-<P>
-The primary purpose of the cascaded encryption in this program, however, is mainly to make the attack on its temporary files less practical than other side-channel attacks. Some argue that a cascaded cipher may be more susceptible to chosen plain-text attacks. However, according to Bruce Schneier in "Applied Cryptography", that applies mostly to the cipher-block chaining mode. As long as the first and second algorithms in the cascade are both stream ciphers (or implemented in a mode that effectively makes them stream ciphers), then the combination of the two is at least as strong as the strongest algorithm.
-<P>
-Therefore if the 2nd algorithm adds no significant cryptographic strength, then the combination of the two is still at least as strong as the 1st algorithm used, or vise versa. If some vulnerability in the 1st algorithm were discovered, the cipher-text will only be as vulnerable as the 2nd algorithm used.  The default implementation uses camellia in OFB mode as the 1st algorithm, and AES in CTR mode as the 2nd algorithm, effectively making them both stream ciphers. Because OFB and CTR mode make a cipher malleable, the cipher-text generated by camellia is verified by a Message Authentication Code generated with a secure HMAC function to guard against chosen cipher-text attack.
-<P>
-  <A HREF="#index">Back To Index</A>
-<A NAME="lbAU">&nbsp;</A>
-<H3>Envelope Concept</H3>
+	<a href="#index">Back To Index</a>
+<a name="lbAU">&nbsp;</a>
+</p><H3>Database Creation and Modification</H3>
 
 <P>
 Note: This program's conceptualization of envelopes is unrelated to OpenSSL's asymmetric encryption functions with similar names provided by the EVP library.
 <P>
-The cipher-text of the 1st algorithm is ran through HMAC-SHA512 to create a Message Authentication Code before being encrypted with the 2nd algorithm. The 1st algorithm’s cipher-text and the MAC are then placed together inside of an &quot;envelope&quot;.  Therefore, the 2nd algorithm is driven by two primary functions, <I>openEnvelope()</I> and <I>sealEnvelope()</I> which contain the 2nd algorithm's routines to &quot;seal&quot; the 1st algorithm's cipher-text message and MAC into an &quot;envelope&quot;, or to &quot;open&quot; an envelope containing them.
+The cipher-text and IV of the EVP algorithm chosen is ran through HMAC-SHA512 to create a Message Authentication Code in Encrypt-then-MAC composition. The header, cipher-text and the MAC are then placed together inside of an &quot;envelope&quot;, which is then also authenticated with a separate MAC.  Therefore, the reading and writing of the database file is driven by two primary functions, <I>openEnvelope()</I> and <I>sealEnvelope()</I> which contain the routines to &quot;seal&quot; the cipher-text message and MACs into an &quot;envelope&quot;, or to &quot;open&quot; an envelope containing them.
 <P>
-<I>sealEnvelope()</I> is used to encrypt the 1st algorithm’s ciphertext (the password database created from user input and padded buffers) with the 2nd algorithm to create an encrypted &quot;envelope&quot; containing the encrypted password database.  The cipher-text of the 1st algorithm is ran through HMAC-SHA512 to create the MAC, then the MAC is concatenated to the ciphertext before being passed to <I>sealEnvelope()</I> and encrypted again with the 2nd algorithm.  The resulting file can be considered the &quot;envelope&quot; we're opening and sealing, which contains the encrypted password database inside. <I>openEnvelope()</I> decrypts the cipher-text data created by the 2nd algorithm, the envelope, and then passes the 1st algorithm's cipher-text, the encrypted password database, on to be checked by HMAC-SHA512.  If the MAC generated matches the MAC attached to the cipher-text, it is passed on for decryption and further processing by the 1st algorithm and the application's operation modes.  Once modifications are complete, the new message (the encrypted database) is passed to <I>sealEnvelope()</I> to form the new &quot;envelope&quot;.
+<I>sealEnvelope()</I> is used to write the cipher-text of the user input to a database file also containing a salt, cipher  and digest information as a header, the cipher text, and finally the MACs.  The cipher-text of the EVP algorithm is ran through HMAC-SHA512 to create the MAC, then the cipher-text is sent via temporary file to <I>sealEnvelope()</I>, prepended with the header, and finally written to file as the database with both a MAC of the cipher-text itself, and the MAC of the header plus the cipher-text appended.  The resulting file can be considered the &quot;envelope&quot; we're opening and sealing, which contains the encrypted password database inside, sandwiched betwen the header and the MACs, which all form the &quot;message&quot;. 
 <P>
-  <A HREF="#index">Back To Index</A>
-<A NAME="lbAV">&nbsp;</A>
-<H3>Authentication Composition</H3>
+<I>openEnvelope()</I> strips the header, storing the salt, cipher/digest information, and MACs to be used, and then passes cipher-text on to a temporary file for decryption and processing.  Only if the MACs generated matches the MACs attached to the cipher-text does the program do any decryption. The separate modes process information in from one temporary file and out to another to make any modications, and once complete, the temporary file with the modifications made is passed back to <I>sealEnvelope()</I> to form the new &quot;envelope&quot;. Any time <I>sealEnvelope()</I> creates a new database file, a new 256-bit salt to be used by PBKDF2 is prepended to the header to ensure no keys ( for both encryption and HMAC) or IVs are reused.
+<P>
+  <a href="#index">Back To Index</a>
+<a name="lbAV">&nbsp;</a>
+</p><H3>Authenicated Encryption and Associated Data</H3>
 
 <P>
-This program uses the Encrypt-then-MAC form of authentication composition on the 1st algorithm.  With this composition, the program uses HMAC-SHA512 to generate a MAC on the cipher-text produced by the 1st algorithm. This MAC is concatenated to the end of the 1st algorithm's cipher-text before the whole combination of message and MAC is encrypted by the 2nd algorithm.  When the 1st algorithm is ready to receive the 2nd algorithm’s decrypted plaintext ( which is also the 1st algorithm's cipher-text) the program will then run HMAC-SHA512 against the message data, and check it against the attached MAC. If the attached MAC doesn't match the MAC generated by the message data (meaning the 1st algorithm’s cipher-text was modified), then no further decryption is done by the 1st algorithm, and the program exits instead.
+Two MACs are generated and appended to the database file for authentication of both the ciper-text held in temporary files, as well as the database file itself.  The cipher-text MAC is generated on the cipher-text alone and verified within each processing mode so that alterations to the cipher-text through the temporary files will be detected and thwart any type of man-in-the-middle attack. The database file as a whole is authenticated so that the associated data (salts, cipher, digest and key derivation configuration) can also be authenticated and detected upon opening the database before other processing modes are used.
 <P>
-Using authentication on the 1st algorithm encryptions alone still means the program is secure against chosen cipher-text attack, but not necessarily to adaptive chosen cipher-text attacks (Green). Ideally, a change to the cipher-text of the 2nd algorithm should correspond to a change in the cipher-text of the 1st algorithm that will be detected with the MAC.  However, if the 2nd algorithm used something like CBC, changes to its padding could be accepted by the 2nd algorithm, without detectable changes made to the cipher-text of the 1st.  Since CFB, OFB or CTR mode is enforced, changes to the 2nd algorithm's cipher-text will force corresponding changes in the 1st algorithm’s cipher-text, which will be detectable by HMAC.
-<P>
-  <A HREF="#index">Back To Index</A>
-<A NAME="lbAW">&nbsp;</A>
-<H3>Temporary Files vs Memory Buffers</H3>
+  <a href="#index">Back To Index</a>
+<a name="lbAW">&nbsp;</a>
+</p><H3>Temporary Files and Memory Sanitation</H3>
 
 <P>
-The program uses temporary files to store and process data, rather than operate solely in memory. camellia-256-OFB (or whatever else is chosen as the 1st algorithm) prevents that data from being sent to disk in plain-text. Data remanence issues of using temporary files to store the data for processing are obvious, and the Schneier 7-Pass method is used to erase sensitive data from files before exit; though this is redundant as the data is already encrypted.  The program cleans up these files, as well as buffers that were storing sensitive information, upon closing or receiving SIGINT or some other error. <I>OPENSSL_cleanse()</I> is used to ensure sanitation calls aren't optimized away by the compiler. The temporary files are also protected by the authenticated encryption described above.
+The temporary files are given a random name that is of a random length, and with read/write permissions only for the file owner.  Despite this, it is still trivial to modify, intercept or inject data into or out of the program via the temporary files if an attacker has elevated privileges. Authenticated encryption helps protect against man-in-the-middle/chosen-cipher-text attacks attempting to modify cipher-text data on its way from disk to memory.
 <P>
-The temporary files are also given a random name that is of a random length, and with read/write permissions only for the file owner.  Despite this, it is still trivial to modify, intercept or inject data into or out of the program via the temporary files if an attacker has elevated privileges. Authenticated encryption also helps protect against man-in-the-middle/chosen-cipher-text attacks attempting to modify cipher-text data on its way from disk to memory. In addition the random file names means an attacker must be able to predict which file contains which data in order to forge cipher-text and the accompanied MAC, and they would have to somehow time and/or automate such an attack.
+The Schneier 7-Pass method is used to erase sensitive data from files before exit; though this is aruably unnecessary since the data is already encrypted, but prevents multiple cipher-texts from being left on disk.  The program cleans up these files, as well as buffers that were storing sensitive information, upon closing or receiving SIGINT or some other error. <I>OPENSSL_cleanse()</I> is used to ensure sanitation calls aren't optimized away by the compiler.
 <P>
-Writing the program to function solely in memory would not necessarily make the program more secure, especially not in respect to any circumstance that would make storing the information to temporary files vulnerable (i.e. an attacker has root access to the machine the program runs on). At best it would only make the information harder to access without a filesystem abstraction; an attacker could write a simple shell script to intercept data into temp files, but would need to write something more sophisticated to access it from memory buffers. On the other hand, if the information in those temp files is encrypted, suddenly the level of sophistication needed to exploit them goes up.
-<P>
-With all that in mind, while operating solely in memory may seem much more secure superficially, the vulnerability of leaving the data in temporary files is only relevant in a situation where storage in memory is mutually vulnerable. Even then, encryption protects the secrets of the plain-text in the temp files, and authentication protects the temp files from tampering, and both effectively make an attack against the temporary files no simpler (and probably much more complicated) than an attack against program memory.
-<P>
-  <A HREF="#index">Back To Index</A>
-<A NAME="lbAX">&nbsp;</A>
-<H3>Memory Locking, Core-Dump and Process-Trace Prevention</H3>
+  <a href="#index">Back To Index</a>
+<a name="lbAX">&nbsp;</a>
+</p><h3>Memory Locking, Core-Dump and Process-Trace Prevention</h3>
 
 <P>
-The program will attempt to &quot;lock&quot; all memory, which will prevent it from accidentally being swapped out to disk.  It also prevents process tracing, and core dump upon crash.  In order to do this, the program needs root priveleges, but drops them after these settings have been made. The executable is installed with the SETUID and SETGID bits and with root as the owner, so the user need not actually execute it as root.
+The program will attempt to &quot;lock&quot; all memory, which will prevent it from accidentally being swapped out to disk.  It also prevents process tracing, and core dump upon crash.  In order to do this, the program needs root priveleges, but drops them after these settings have been made. The executable is installed with the SETUID and SETGID bits and with root as the owner, so the user need not execute it as root or with sudo.
 <P>
-<A HREF="#index">Back To Index</A>
-<A NAME="lbBC">&nbsp;</A>
-<H2>EXAMPLES</H2>
+<a href="#index">Back To Index</a>
+<a name="lbBC">&nbsp;</a>
+</p><h2>EXAMPLES</h2>
 
 <P>
-Initialize a new password database and save it to the file passwords.  Also randomly generate a password of 32 characters for the new entry, and send that new password to the clipboard.
+Initialize a new password database using blowfish encryption, whirlpool for key digest, and 750000 PBKDF2 iterations, and save it to the file 'passwords'.  Also randomly generate a password of 32 characters for the new entry, and send that new password to the clipboard, clearing it from  memory in 5 seconds
 <P>
 <DL COMPACT><DT><DD>
-passmanager -a &quot;gmail : myemail@gmail.com&quot; -p gen -l 32 -f ./passwords -C
-</DL>
-
-<P>
-Change the encryption to encipher blowfish into camellia, and derive the key for blowfish with the whirlpool digest algorithm, and the key for camellia with sha512
-<P>
-<DL COMPACT><DT><DD>
-passmanager -U -c blowfish-ofb:camellia-256-ofb -H whirlpool:sha512 -f ./passwords
+passmanager -a &quot;gmail : <A HREF="mailto:myemail@gmail.com">myemail@gmail.com</A>&quot; -p gen -c bf-ofb -H whirlpool -i 750000 -l 32 -C -s 5 -f ./passwords
 </DL>
 
 <P>
@@ -502,24 +468,24 @@ passmanager -U -f ./passwords
 </DL>
 
 <P>
-Or you could do both in one command
+Or you could do both change the password, the encryption and digest algorithms, and PBKDF2 iteration amount in one command
 <P>
 <DL COMPACT><DT><DD>
-passmanager -U -c camellia-256-ofb:aes-256-ctr -H whirlpool:sha512 -P -f ./passwords
+passmanager -U -c aes-256-ctr -H whirlpool -i 1000000-P -f ./passwords
 </DL>
 
 <P>
-Update the previously added entry name from &quot;gmail : myemail@gmail.com&quot; to &quot;gmail : myemail1@gmail.com&quot; (Note how we're partially matching &quot;gmail&quot;, and the need for quotations around the new entry name since it contains whitespace)
+Update the previously added entry name from &quot;gmail : <A HREF="mailto:myemail@gmail.com">myemail@gmail.com</A>&quot; to &quot;gmail : <A HREF="mailto:myemail1@gmail.com">myemail1@gmail.com</A>&quot; (Note how we're partially matching &quot;gmail&quot;, and the need for quotations around the new entry name since it contains whitespace)
 <P>
 <DL COMPACT><DT><DD>
-passmanager -u gmail -n &quot;gmail : myemail1@gmail.com&quot; -f ./passwords
+passmanager -u gmail -n &quot;gmail : <A HREF="mailto:myemail1@gmail.com">myemail1@gmail.com</A>&quot; -f ./passwords
 </DL>
 
 <P>
 Add a second gmail account but with the entry password &quot;password&quot;
 <P>
 <DL COMPACT><DT><DD>
-passmanager -a &quot;gmail : myemail2@gmail.com&quot; -p password -f ./passwords
+passmanager -a &quot;gmail : <A HREF="mailto:myemail2@gmail.com">myemail2@gmail.com</A>&quot; -p password -f ./passwords
 </DL>
 
 <P>
@@ -531,17 +497,17 @@ passmanager -r allpasses -f ./passwords
 
 <P>
 <DL COMPACT><DT><DD>
-gmail : myemail1@gmail.com : Us3[Ag1&lt;lRw9%Vj5&gt;La0{Nh4|Kr8$Te7
+gmail : <A HREF="mailto:myemail1@gmail.com">myemail1@gmail.com</A> : Us3[Ag1&lt;lRw9%Vj5&gt;La0{Nh4|Kr8$Te7
 <P>
-gmail : myemail2@gmail.com : password
+gmail : <A HREF="mailto:myemail2@gmail.com">myemail2@gmail.com</A> : password
 </DL>
 
 <P>
 <P>
-To update the password for myemail2@gmail.com with a randomly generated 16 character (default) password, and send the newly created password to clipboard
+To update the password for <A HREF="mailto:myemail2@gmail.com">myemail2@gmail.com</A> with a randomly generated 16 character (default) password, and send the newly created password to clipboard
 <P>
 <DL COMPACT><DT><DD>
-passmanager -u &quot;gmail : myemail2&quot; -p gen -f ./passwords -C
+passmanager -u &quot;gmail : myemail2&quot; -p gen -C -f ./passwords
 </DL>
 
 <P>
@@ -552,7 +518,7 @@ passmanager -u &quot;gmail : myemail2&quot; -P -f ./passwords
 </DL>
 
 <P>
-Read the new password for myemail2@gmail.com and send it directly to the clipboard
+Read the new password for <A HREF="mailto:myemail2@gmail.com">myemail2@gmail.com</A> and send it directly to the clipboard
 <P>
 <DL COMPACT><DT><DD>
 passmanager -r &quot;gmail : myemail2&quot; -C -f ./passwords
@@ -576,7 +542,7 @@ passmanager -d gmail -f ./passwords
 To print all passwords in database, and supply the database password as a command-line argument (Perhaps to fill in from some other location besides user input)
 <P>
 <DL COMPACT><DT><DD>
-passmanager -r allpasses -f ./passwords -x password
+passmanager -r allpasses -x password -f ./passwords
 </DL>
 
 <P>
@@ -587,13 +553,15 @@ passmanager -u allpasses -p gen -f ./passwords
 </DL>
 
 <P>
-  <A HREF="#index">Back To Index</A>
-<H2>SEE ALSO</H2>
+  <a href="#index">Back To Index</a>
+  <a name="SEEALSO">&nbsp;</a>
+</p><h2>SEE ALSO</h2>
 
-<A HREF="https://www.openssl.org/docs/manmaster/man1/openssl.html">openssl</A>(1), <A HREF="https://linux.die.net/man/1/xclip">xclip</A>(1), <A HREF="https://www.openssl.org/docs/manmaster/man7/crypto.html">crypto</A>(3), <A HREF="https://www.openssl.org/docs/man1.0.2/crypto/evp.html">evp</A>(3), <A HREF="https://www.openssl.org/docs/man1.0.2/crypto/EVP_EncryptInit.html">EVP_EncryptInit</A>(3), <A HREF="https://www.openssl.org/docs/man1.1.0/crypto/PKCS5_PBKDF2_HMAC.html">PKCS5_PBKDF2_HMAC</A>(3), <A HREF="https://www.openssl.org/docs/manmaster/man7/RAND.html">RAND</A>(3), <A HREF="https://www.openssl.org/docs/man1.0.2/crypto/RAND_bytes.html">RAND_bytes</A>(3)
-<P>
-<P>
-<P>
-<A HREF="#index">Back To Index</A>
-</BODY>
-</HTML>
+<a href="https://www.openssl.org/docs/manmaster/man1/openssl.html">openssl</a>(1), <a href="https://linux.die.net/man/1/xclip">xclip</a>(1), <a href="https://www.openssl.org/docs/manmaster/man7/crypto.html">crypto</a>(3), <a href="https://www.openssl.org/docs/man1.0.2/crypto/evp.html">evp</a>(3), <a href="https://www.openssl.org/docs/man1.0.2/crypto/EVP_EncryptInit.html">EVP_EncryptInit</a>(3), <a href="https://www.openssl.org/docs/man1.1.0/crypto/PKCS5_PBKDF2_HMAC.html">PKCS5_PBKDF2_HMAC</a>(3), <a href="https://www.openssl.org/docs/manmaster/man7/RAND.html">RAND</a>(3), <a href="https://www.openssl.org/docs/man1.0.2/crypto/RAND_bytes.html">RAND_bytes</a>(3)
+<p>
+</p><p>
+</p><p>
+<a href="#index">Back To Index</a>
+
+
+</p></dd></body></html>
