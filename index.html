@@ -26,7 +26,6 @@
 </dd><dt><a href="#lbAL">OPENSSL NOTES</a></dt><dd>
 <dl>
 <dd>
-</dd><dt><a href="#lbAN">CFB, OFB and CTR Modes</a></dt><dd>
 </dd><dt><a href="#lbAO">OpenSSL Ciphers and Digests</a></dt><dd>
 </dd><dt><a href="#lbAQ">CSPRNG</a></dt><dd>
 </dd></dl>
@@ -36,7 +35,7 @@
 </dd><dd>
 </dd><dt><a href="#lbAU">Database Creation and Modification</a></dt><dd>
 </dd><dt><a href="#lbAV">Authenicated Encryption and Associated Data</a></dt><dd>
-</dd><dt><a href="#lbAW">Temporary Files and Memory Sanitation</a></dt><dd>
+</dd><dt><a href="#lbAW">Memory Sanitation</a></dt><dd>
 </dd><dt><a href="#lbAX">Memory Locking, Core-Dump and Process-Trace Prevention</a></dt><dd>
 </dd></dl>
 </dd><dt><a href="#lbBC">EXAMPLES</a></dt><dd>
@@ -179,7 +178,7 @@ Options may have different implications depending on operating mode
 <B>-H</B> <I>digest</I> - Specify 'list' for a list of methods available to OpenSSL. Default: sha512.
 <P>
 
-<B>-i</B> <I>iterations</I> - Specify amount of PBKDF2 to be <I>iterations</I>. Default: 500000
+<B>-i</B> <I>iterations</I> - Specify amount of PBKDF2 to be <I>iterations</I>. Default: 1000000
 <P>
 
 <B>-P</B> - In <I>Update entry</I> or <I>Update database</I>  mode (<B>-u</B> and <B>-U</B> respectively) this option enables updating the <I>entry password</I> or <I>database password</I> via prompt instead of as command line argument
@@ -252,7 +251,7 @@ Applicable options
 Entries can be specifically matched such as &quot;gmail : account1&quot; and &quot;gmail : account2&quot;, or both with 'gmail'.
 <P>
 
-Searching for a specific entry pass can be useful to send the password directly to the clipboard using xclip.
+Searching for a specific entry pass can be useful to send the password directly to the clipboard using xclip. Note that if multiple entries match your search string, only the first matched entry will be sent to the clipboard.
 <P>
 
 To display the entire password database, enter 'allpasses' for the <I>entry name</I> argument.
@@ -301,7 +300,7 @@ via prompt or as a command line argument ( not recommended ).
 
 As in <b>Add</b> mode, entering 'gen' for the <i>entry password</i> argument will generate a random password.  This is especially useful for updating old passwords.
 </p><p>
-Single new passwords can be sent directly to the clipboard with xclip as well.
+Single new passwords can be sent directly to the clipboard with xclip as well. Note that if multiple entries match your search string, only the first matched entry will be updated and sent to the clipboard.
 </p><p>
 All entries can be updated at once with new randomly generated passwords, if <i>entry name</i> is equal to 'allpasses'
 </p><p>
@@ -367,20 +366,11 @@ updates database password. Read via prompt. Cannot be supplied via commandline.
 <a name="lbAL">&nbsp;</a>
 </p><h2>OPENSSL NOTES</h2>
 
-<p>
-	
-<a name="lbAN">&nbsp;</a>
-</p><h3>CFB, OFB and CTR Modes</h3>
-
-<P>
-<DD>The program will enforce CFB, OFB or CTR modes for block ciphers. These modes are enforced to effectively turn any block ciphers into stream ciphers because the program is not designed to handle padding for modes like CBC.
-<P>
-  <a href="#index">Back To Index</a>
 <a name="lbAO">&nbsp;</a>
 </p><h3>OpenSSL Ciphers</h3>
 
 <P>
-The encryption algorithm used by OpenSSL can be chosen between the ciphers provided by the high-level functions in the <I><A HREF="/cgi-bin/man/man2html?3+evp">evp</A>(3)</I> library. By default the program uses 256-bit AES in CTR mode, using the <I><A HREF="/cgi-bin/man/man2html?3+PKCS5_PBKDF2_HMAC">PKCS5_PBKDF2_HMAC</A>(3)</I> function to derive keys (see <I><A HREF="/cgi-bin/man/man2html?3+PKCS5_PBKDF2_HMAC">PKCS5_PBKDF2_HMAC</A>(3)</I> for details), and the SHA512 digest algorithm. Authenticated ciphers using GCM or CCM are not supported as the program uses HMAC for authentication. The ability to choose cipher algorithms is primarily added incase disparate versions of OpenSSL are installed across different machine, thus making different ciphers available.  For example, ChaCha20 may not be available on one machine while it is on the other.
+The encryption algorithm used by OpenSSL can be chosen between the ciphers provided by the high-level functions in the <I><A HREF="/cgi-bin/man/man2html?3+evp">evp</A>(3)</I> library. By default the program uses 256-bit AES in CTR mode, using the <I><A HREF="/cgi-bin/man/man2html?3+PKCS5_PBKDF2_HMAC">PKCS5_PBKDF2_HMAC</A>(3)</I> function to derive keys (see <I><A HREF="/cgi-bin/man/man2html?3+PKCS5_PBKDF2_HMAC">PKCS5_PBKDF2_HMAC</A>(3)</I> for details), and the SHA512 digest algorithm. Authenticated ciphers using GCM or CCM are not supported as the program uses HMAC for authentication. The ability to choose cipher algorithms is primarily added incase different versions of OpenSSL are installed across different machine, thus making different ciphers available.  For example, ChaCha20 may not be available on one machine while it is on the other.
 <P>
   <a href="#index">Back To Index</a>
 
@@ -404,29 +394,27 @@ Input buffers will accept any amount of whitespace or special characters up to 5
 </p><H3>Database Creation and Modification</H3>
 
 <P>
-Note: This program's conceptualization of envelopes is unrelated to OpenSSL's asymmetric encryption functions with similar names provided by the EVP library.
+The cipher-text and IV of the EVP algorithm chosen is ran through HMAC-SHA512 to create a Message Authentication Code in Encrypt-then-MAC composition. The header, cipher-text and the MAC are then placed together inside of a database file, which is then also authenticated with a separate MAC.  Therefore, the reading and writing of the database file is driven by two primary functions, <i>openDatabase()</i> and <i>writeDatabase()</i> which contain the routines to write the cipher-text message and MACs into a database, or to read a database containing them. Every database file created has its own unique 256-bit salt to be used by PBKDF2 and is prepended to the header to ensure no keys ( for both encryption and HMAC) or IVs are reused across mulitiple database files.
+
 <P>
-The cipher-text and IV of the EVP algorithm chosen is ran through HMAC-SHA512 to create a Message Authentication Code in Encrypt-then-MAC composition. The header, cipher-text and the MAC are then placed together inside of an &quot;envelope&quot;, which is then also authenticated with a separate MAC.  Therefore, the reading and writing of the database file is driven by two primary functions, <I>openEnvelope()</I> and <I>sealEnvelope()</I> which contain the routines to &quot;seal&quot; the cipher-text message and MACs into an &quot;envelope&quot;, or to &quot;open&quot; an envelope containing them.
+<i>writeDatabase()</i> is used to write the cipher-text of the user input to a database file also containing a salt, cipher and digest names, and PBKDF2 iteration amount as a header, the cipher text, and finally the MACs.  The cipher-text of the EVP algorithm is ran through HMAC-SHA512 to create the MAC, then the cipher-text is sent to <i>writeDatabase()</i>, prepended with the header, and finally written to file as the database with both a MAC of the cipher-text itself, and the MAC of the header plus the cipher-text appended.  The resulting file can be considered the database we're reading and writing, which contains the encrypted password database inside, sandwiched betwen the header and the MACs. 
+
 <P>
-<I>sealEnvelope()</I> is used to write the cipher-text of the user input to a database file also containing a salt, cipher  and digest information as a header, the cipher text, and finally the MACs.  The cipher-text of the EVP algorithm is ran through HMAC-SHA512 to create the MAC, then the cipher-text is sent via temporary file to <I>sealEnvelope()</I>, prepended with the header, and finally written to file as the database with both a MAC of the cipher-text itself, and the MAC of the header plus the cipher-text appended.  The resulting file can be considered the &quot;envelope&quot; we're opening and sealing, which contains the encrypted password database inside, sandwiched betwen the header and the MACs, which all form the &quot;message&quot;. 
-<P>
-<I>openEnvelope()</I> strips the header, storing the salt, cipher/digest information, and MACs to be used, and then passes cipher-text on to a temporary file for decryption and processing.  Only if the MACs generated matches the MACs attached to the cipher-text does the program do any decryption. The separate modes process information in from one temporary file and out to another to make any modications, and once complete, the temporary file with the modifications made is passed back to <I>sealEnvelope()</I> to form the new &quot;envelope&quot;. Any time <I>sealEnvelope()</I> creates a new database file, a new 256-bit salt to be used by PBKDF2 is prepended to the header to ensure no keys ( for both encryption and HMAC) or IVs are reused.
+<i>openDatabase()</i> strips the header, storing the salt, cipher and digest names, PBKDF2 iteration amount, and MACs to be used, and then passes cipher-text on to a buffer for decryption and processing.  Only if the MACs generated match the MACs attached to the cipher-text does the program do any decryption. The separate modes process information in from a buffer to make any modications, and once complete, the buffer with the modifications made is passed back to <i>writeDatabase()</i> to overwrite the pervious databse with the modifications made.
 <P>
   <a href="#index">Back To Index</a>
 <a name="lbAV">&nbsp;</a>
 </p><H3>Authenicated Encryption and Associated Data</H3>
 
 <P>
-Two MACs are generated and appended to the database file for authentication of both the ciper-text held in temporary files, as well as the database file itself.  The cipher-text MAC is generated on the cipher-text alone and verified within each processing mode so that alterations to the cipher-text through the temporary files will be detected and thwart any type of man-in-the-middle attack. The database file as a whole is authenticated so that the associated data (salts, cipher, digest and key derivation configuration) can also be authenticated and detected upon opening the database before other processing modes are used.
+Two MACs are generated and appended to the database file for authentication of both the ciper-text held in temporary buffers, as well as the database file itself.  The cipher-text MAC is generated on the cipher-text alone and verified within each processing mode so that alterations to the cipher-text through the temporary buffers will be detected and thwart any type of man-in-the-middle attack. The database file as a whole is also authenticated so that the associated data (salt, cipher name, digest name and key derivation configuration) can also be authenticated and detected upon opening the database before other processing modes are used.
 <P>
   <a href="#index">Back To Index</a>
 <a name="lbAW">&nbsp;</a>
-</p><H3>Temporary Files and Memory Sanitation</H3>
+</p><H3>Memory Sanitation</H3>
 
 <P>
-The temporary files are given a random name that is of a random length, and with read/write permissions only for the file owner.  Despite this, it is still trivial to modify, intercept or inject data into or out of the program via the temporary files if an attacker has elevated privileges. Authenticated encryption helps protect against man-in-the-middle/chosen-cipher-text attacks attempting to modify cipher-text data on its way from disk to memory.
-<P>
-The Schneier 7-Pass method is used to erase sensitive data from files before exit; though this is aruably unnecessary since the data is already encrypted, but prevents multiple cipher-texts from being left on disk.  The program cleans up these files, as well as buffers that were storing sensitive information, upon closing or receiving SIGINT or some other error. <I>OPENSSL_cleanse()</I> is used to ensure sanitation calls aren't optimized away by the compiler.
+<I>OPENSSL_cleanse()</I> is used to ensure sanitation calls aren't optimized away by the compiler.
 <P>
   <a href="#index">Back To Index</a>
 <a name="lbAX">&nbsp;</a>
