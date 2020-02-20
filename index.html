@@ -34,9 +34,10 @@
 <dt><a href="#lbAS">Input Padding</a></dt><dd>
 </dd><dd>
 </dd><dt><a href="#lbAU">Database Creation and Modification</a></dt><dd>
-</dd><dt><a href="#lbAV">Authenicated Encryption and Associated Data</a></dt><dd>
+</dd><dt><a href="#lbAV">Authenticated Encryption and Associated Data with User Friendliness</a></dt><dd>
 </dd><dt><a href="#lbAW">Memory Sanitation</a></dt><dd>
 </dd><dt><a href="#lbAX">Memory Locking, Core-Dump and Process-Trace Prevention</a></dt><dd>
+</dd><dt><a href="#lbAY">Clipboard Functionality</a></dt><dd>
 </dd></dl>
 </dd><dt><a href="#lbBC">EXAMPLES</a></dt><dd>
 </dd><dt><a href="#SEEALSO">SEE ALSO</a></dt><dd>
@@ -46,14 +47,13 @@
 <h2>DESCRIPTION</h2>
 
 <P>
-passmanager  is an ultra simple, but very secure password management program written in C and making use of OpenSSL's Libcrypto API libraries.  The
-passwords can be written, read, updated or deleted from an encrypted database file.  
+passmanager  is an ultra simple, but very secure password management program written in C and making use of OpenSSL's Libcrypto API libraries. The passwords can be written, read, updated or deleted from an encrypted database file.  
 <P>
 <P>
 New passwords can be randomly generated when creating or updating account credentials. Passwords  can  be  matched by entry name, and printed/updated/deleted in bulk or individually. All password entries in the database can be updated at once with ease. If the user updated/deleted a password they didn't intend to, the program lists which entries were matched and edited, and provides an automatically produced backup file to restore from. The database password and encryption method can be changed at any time.
 <P>
 <P>
-The program pays special attention to minimize the amount user passwords are displayed on screen or stored in memory, and allows them to be sent directly to the clipboard (via xclip), with the password being cleared from the clipboard after 30 seconds. Allowing the passwords to be sent directly to the clipboard means adding, updating or retrieving a password can be done without it ever being visible on the screen. Even if a user must display an entry's password to verify it, only that pass can be printed, in order to prevent the entire database being displayed on screen.  Authenticated encryption with HMAC protects the database against both data corruption and tampering.
+The program pays special attention to minimize the amount user passwords are displayed on screen or stored in memory, and allows them to be sent directly to the clipboard (via native X librry calls (default), or xsel binary depending on compilation options), with the password being cleared from the clipboard afterward. Allowing the passwords to be sent directly to the clipboard means adding, updating or retrieving a password can be done without it ever being visible on the screen. Even if a user must display an entry's password to verify it, only that pass can be printed, in order to prevent the entire database being displayed on screen.  Authenticated encryption with HMAC protects the database against both data corruption and tampering.
 <P>
 <P>
 Account credentials are encrypted with 256-bit AES in CTR mode with HMAC-SHA512 for authentication. Using OpenSSL's EVP functions also enables the use of any encryption and digest algorithms ( for key derivation using PBKDF2 ) supported by  the EVP interface.
@@ -110,24 +110,24 @@ With this format and the modes provided, the user can easily and securely manage
 </p><h2>DEPENDENCIES</h2>
 <p>
 OpenSSL development files (1.0.1.g or higher)
-	<br>
-	libcap development files (2.24-12 or higher)
-  <br>
-xclip (optional for clipboard functions)
+<br>
+xsel or X11 (optional for clipboard functions)
 </p><p>
 <a href="#index">Back To Index</a>
   
 <a name="COMPILATION">&nbsp;</a>
 </p><h2>COMPILATION</h2>
 <p>
-If you don't want to install the automake package contents, and want to 
-compile the binary alone, just link with lcrypto and lcap
-</p><p>
-gcc passmanager.c -o passmanager -lcrypto -lcap
-</p><p>
-Special Note: I would advise against using optimization, because the 
-functions which are used to clear memory of sensitive data may be 
-optimized out.
+If you don't want to install the automake package contents, and want to compile the binary alone:
+<p>
+gcc passmanager.c -o passmanager -lcrypto -lX11 -D HAVE_LIBX11
+<p>
+...or if you want to use xsel for clipboard functions, or disable clipboard functions all together...
+<p>
+gcc passmanager.c -o passmanager -lcrypto
+<p>
+Special Note: I would advise against using optimization, because the functions which are used to clear memory of sensitive data may be optimized out.
+
   </p><p>
   <a href="#index">Back To Index</a>
  
@@ -136,7 +136,7 @@ optimized out.
 
 <P>
 
-passmanager <B>-a</B> <I>entry name</I> | <B>-r</B> <I>entry name</I> | <B>-d</B> <I>entry name</I> | <B>-u</B> <I>entry name</I> | <B>-U</B> [-n <I>new name</I> ] [-p <I>new entry password</I>] [-l <I>random password length</I>] [-c <I>cipher</I>] [-H <I>digest</I>] [-i <I>iterations</I> ] [ -P ] [ -C ] [ -s <I>seconds</I> ] [-x <I>database password</I>] <B>-f</B> <I>database file</I>
+passmanager <B>-a</B> <I>entry name</I> | <B>-r</B> <I>entry name</I> | <B>-d</B> <I>entry name</I> | <B>-u</B> <I>entry name</I> | <B>-U</B> [-n <I>new name</I> ] [-p <I>new entry password</I>] [-l <I>random password length</I>] [-c <I>cipher</I>] [-H <I>digest</I>] [-i <I>iterations</I> ] [ -P ] [ -C ] [ -O ] [ -s <i>selection</i> ] [ -t <i>seconds</i> or <i>miliseconds</i> ] [-x <I>database password</I>] <B>-f</B> <I>database file</I>
 <P>
 <P>
 <a href="#index">Back To Index</a>
@@ -163,10 +163,10 @@ Options may have different implications depending on operating mode
 <B>-U - Update database</B> mode
 <P>
 
-<B>-n</B> <I>new name</I>&nbsp;- entry name up to 512 characters (can contain white space or special characters)
+<B>-n</B> <I>new name</I>&nbsp;- entry name up to 511 characters (can contain white space or special characters)
 <P>
 
-<B>-p</B> <I>new entry password</I> - entry password up to 512 characters (don't call to be prompted instead) ('gen' will generate a random password, 'genalpha' will generate a random password with no symbols)
+<B>-p</B> <I>new entry password</I> - entry password up to 511 characters (don't call to be prompted instead) ('gen' will generate a random password, 'genalpha' will generate a random password with no symbols)
 <P>
 
 <B>-l</B> <I>random password length</I> - makes 'gen' or 'genalpha' generate a password <I>random password length</I> digits long (defaults to 16 without this option)
@@ -184,13 +184,22 @@ Options may have different implications depending on operating mode
 <B>-P</B> - In <I>Update entry</I> or <I>Update database</I>  mode (<B>-u</B> and <B>-U</B> respectively) this option enables updating the <I>entry password</I> or <I>database password</I> via prompt instead of as command line argument
 <P>
 
-<B>-C</B> - send <I>entry password</I> directly to clipboard. Clipboard is cleared 30 seconds afterward. (needs xclip)
+<B>-C</B> - send <I>entry password</I> directly to clipboard. Clipboard is cleared automatically after pasting, or in 30 seconds if using xsel for clipbord functions.
 <P>
 
-<B>-s</B> <I>seconds</I> - clear clipboard <I>seconds</I> after instead of default 30
+<B>-t</B> <i>n</i>ms or <i>n</i>s - clear password from clipboard in <i>n</i> miliseconds or seconds instead of default 30 seconds.
+<P>
+
+<B>-O</B> - implies '-t 55ms' to allow only one pasting of password before its cleared
+<P>
+
+<B>-s</B> <i>selection</i> - use either <i>primary</i> or <i>clipboard</i> X selection (Defaults to 'primary').
 <P>
 
 <B>-x</B> <I>database password</I> - To supply database password as command-line argument (not reccomended)
+<P>
+    
+<B>-I</B> - Print database information
 <P>
 
 <B>-f</B> - <I>database file</I> ( must be specified )
@@ -230,9 +239,13 @@ Applicable options
 <DT>
 <B>-C</B> send <I>new entry password</I> to clipboard (useful if randomly generated)
 <DT>
-<B>-i</B> <I>iterations</I> - Specify PBKDF2 iteration amount as <I>iterations</I>.
+<B>-t</B> <i>n</i>ms or <i>n</i>s - clear password from clipboard in <i>n</i> miliseconds or seconds instead of default 30 seconds.
 <DT>
-<B>-s</B> <I>seconds</I> - clear clipboard <I>seconds</I> after instead of default 30
+<B>-O</B> - implies '-t 55ms' to allow only one pasting of password before its cleared
+<DT>
+<B>-s</B> <i>selection</i> - use either <i>primary</i> or <i>clipboard</i> X selection (Defaults to 'primary').
+<DT>
+<B>-i</B> <I>iterations</I> - Specify PBKDF2 iteration amount as <I>iterations</I>
 </DL>
 </DL>
 
@@ -251,7 +264,7 @@ Applicable options
 Entries can be specifically matched such as &quot;gmail : account1&quot; and &quot;gmail : account2&quot;, or both with 'gmail'.
 <P>
 
-Searching for a specific entry pass can be useful to send the password directly to the clipboard using xclip. Note that if multiple entries match your search string, only the first matched entry will be sent to the clipboard.
+Searching for a specific entry pass can be useful to send the password directly to the clipboard. Note that if multiple entries match your search string, only the first matched entry will be sent to the clipboard.
 <P>
 
 To display the entire password database, enter 'allpasses' for the <I>entry name</I> argument.
@@ -264,7 +277,11 @@ Applicable options
 <DT>
 <B>-C</B> send <I>entry name</I> password directly to clipboard (useful to avoid displaying passwords on screen)
 <DT>
-<B>-s</B> <I>seconds</I> - clear clipboard <I>seconds</I> after instead of default 30
+<B>-t</B> <i>n</i>ms or <i>n</i>s - clear password from clipboard in <i>n</i> miliseconds or seconds instead of default 30 seconds.
+<DT>
+<B>-O</B> - implies '-t 55ms' to allow only one pasting of password before its cleared
+<DT>
+<B>-s</B> <i>selection</i> - use either <i>primary</i> or <i>clipboard</i> X selection (Defaults to 'primary').
 </DL>
 </DL>
 
@@ -300,7 +317,7 @@ via prompt or as a command line argument ( not recommended ).
 
 As in <b>Add</b> mode, entering 'gen' for the <i>entry password</i> argument will generate a random password.  This is especially useful for updating old passwords.
 </p><p>
-Single new passwords can be sent directly to the clipboard with xclip as well. Note that if multiple entries match your search string, only the first matched entry will be updated and sent to the clipboard.
+Single new passwords can be sent directly to the clipboard as well. Note that if multiple entries match your search string, only the first matched entry will be updated and sent to the clipboard.
 </p><p>
 All entries can be updated at once with new randomly generated passwords, if <i>entry name</i> is equal to 'allpasses'
 </p><p>
@@ -320,8 +337,12 @@ updates <i>entry name</i> and <i>entry password</i>, getting <i>new entry passwo
 <b>-x</b> <i>database password</i>
 </dt><dt>
 <b>-C</b> send <i>new entry password</i> directly to clipboard after updating <i>entry name</i>
-</dt><dt>
-<b>-s</b> <i>seconds</i> - clear clipboard <i>seconds</i> after instead of default 30
+<DT>
+<B>-t</B> <i>n</i>ms or <i>n</i>s - clear password from clipboard in <i>n</i> miliseconds or seconds instead of default 30 seconds.
+<DT>
+<B>-O</B> - implies '-t 55ms' to allow only one pasting of password before its cleared
+<DT>
+<B>-s</B> <i>selection</i> - use either <i>primary</i> or <i>clipboard</i> X selection (Defaults to 'primary').
 </dt></dl>
 </dd></dl>
 
@@ -335,7 +356,7 @@ updates <i>entry name</i> and <i>entry password</i>, getting <i>new entry passwo
 <DD>In <B>Update database</B> mode the password and the underlying OpenSSL encryption of the database can be updated.
 <P>
 
-If option <B>-c</B> or <B>-H</B> given to update the encryption or digest algorithm ( respectively ) then <B>-P</B> is needed to change the database password as well.
+If option <B>-c</B> or <B>-H</B> given to update the encryption or digest algorithm ( respectively ) then <B>-P</B> is needed if changing the database password is also desired.
 <P>
 
 If only option <B>-U</B> is present, then only the password is updated.
@@ -387,27 +408,40 @@ The EVP library also provides access to OpenSSL's CSPRNG as described in <I><A H
 <a name="lbAS">&nbsp;</a>
 </p><h3>Input Padding</h3>
 <P>
-Input buffers will accept any amount of whitespace or special characters up to 512 characters in length.  The buffers are padded with pseudo-random data from a Cryptographically Strong Pseudo Random Number Generator (CSPRNG). This was done with more consideration than simply providing ample memory for user input. The extra space being padded with pseudo-random data also helps suppress natural-language frequencies, making frequency analysis of the cipher-text less useful.
+Input buffers will accept any amount of whitespace or special characters up to 511 characters in length.  The buffers are padded with pseudo-random data from a Cryptographically Strong Pseudo Random Number Generator (CSPRNG). This was done with more consideration than simply providing ample memory for user input. The extra space being padded with pseudo-random data also helps suppress natural-language frequencies, making frequency analysis of the cipher-text less useful.
 <P>
 	<a href="#index">Back To Index</a>
 <a name="lbAU">&nbsp;</a>
 </p><H3>Database Creation and Modification</H3>
 
 <P>
-The cipher-text and IV of the EVP algorithm chosen is ran through HMAC-SHA512 to create a Message Authentication Code in Encrypt-then-MAC composition. The header, cipher-text and the MAC are then placed together inside of a database file, which is then also authenticated with a separate MAC.  Therefore, the reading and writing of the database file is driven by two primary functions, <i>openDatabase()</i> and <i>writeDatabase()</i> which contain the routines to write the cipher-text message and MACs into a database, or to read a database containing them. Every database file created has its own unique 256-bit salt to be used by PBKDF2 and is prepended to the header to ensure no keys ( for both encryption and HMAC) or IVs are reused across mulitiple database files. This salt is also updated any time a modification to the database is made.
+A password database is created with <i>writeDatabase()</i> when the first password entry is added, or when modifications are made. PBKDF2 is used to derive an appropriately sized key and/or IV for the cipher algorithm selected, using the user-supplied database password.  A randomly generated 256-bit salt is supplied to PBKDF2 along with either a default or user-supplied specification of iterations, and a default or user-supplied message digest to use. <i>openDatabase()</i> is used upon every subsequent reading of the password database to configure these options and check for database integrity, authenticity, and correct password, before any decryption or encryption key-derivation is done. A new salt is generated for PBKDF2 any time a modification is made to the database, so that there is never any key/IV reuse.
 
 <P>
-<i>writeDatabase()</i> is used to write the cipher-text of the user input to a database file also containing a salt, cipher and digest names, and PBKDF2 iteration amount as a header, the cipher text, and finally the MACs.  The cipher-text of the EVP algorithm is ran through HMAC-SHA512 to create the MAC, then the cipher-text is sent to <i>writeDatabase()</i>, prepended with the header, and finally written to file as the database with both a MAC of the cipher-text itself, and the MAC of the header plus the cipher-text appended.  The resulting file can be considered the database we're reading and writing, which contains the encrypted password database inside, sandwiched betwen the header and the MACs. 
+<i>writeDatabase()</i> first writes a header comprised of the salt, the algorithm for encryption and message-digest algorithm for key derivation to use, as well as the amount iterations for PBKDF2 to use. It then writes the resulting cipher-text of the password entries before a keyed hash, a MAC, and a checksum of all the preceding, are signed to it by concatenation and appended as a footer. HMAC-SHA512 is used to generate a keyed hash of the user-supplied database password, that is then signed so that the database password a user supplies can be checked for correctness. HMAC-SHA512 is then used to generate a MAC of the cipher-text and associated data (salt, cipher and digest configuration, PBKDF2 iteration amount, and IV), that is then signed to ensure authenticity. SHA512 is then used to hash the header, cipher-text, keyed-hash and MAC, and the checksum is signed to ensure general integrity of the database. All modifications to the database are saved in memory and sent to <i>writeDatabase()</i> to overwrite the previous file.
 
 <P>
-<i>openDatabase()</i> strips the header, storing the salt, cipher and digest names, PBKDF2 iteration amount, and MACs to be used, and then passes cipher-text on to a buffer for decryption and processing.  Only if the MACs generated match the MACs attached to the cipher-text does the program do any decryption. The separate modes process information in from a buffer to make any modications, and once complete, the buffer with the modifications made is passed back to <i>writeDatabase()</i> to overwrite the pervious databse with the modifications made.
+<i>openDatabase()</i> parses the header for cipher and key configuration. It then reads in the keyed hash of the password, the MAC of the cipher-text and associated data (salt, cipher and digest configuration, PBKDF2 iteration amount, and IV), and the database checksum. A checksum of the database file is then generated and compared to the one it is signed with to check for general integrity of the database in storage. Following that, the keyed hash of the database password the user entered is compared to the keyed hash the database is siged with to determine if the user-supplied password matches the one the database was created with. Finally, the cipher-text data is passed on to the various operating modes that then generate a MAC with it and the associated data, and compare that to the MAC the database was signed with to verify authenticity of the cipher-text and associated data in memory.  If the database integrity can't be verified, the user-supplied password is not correct, or the cipher-text and associated data can't be authenticated, the program informs which of these was the case (and possible reasons) and exits.  Otherwise, the cipher-text is decrypted and read into memory for processing. If modifications were made, the new data is encrypted, and sent to <i>writeDatabase()</i> to form the new database.
+
 <P>
   <a href="#index">Back To Index</a>
 <a name="lbAV">&nbsp;</a>
-</p><H3>Authenicated Encryption and Associated Data</H3>
+</p><H3>Authenticated Encryption and Associated Data with User Friendliness</H3>
+
+The cipher-text is authenticated in Encrypt-then-MAC composition. If the database fails an integrity check, the password was incorrect, or the cpher-text/associated-data fails authentication, derivation of the decryption key and the actual decryption process never takes place.
 
 <P>
-Two MACs are generated and appended to the database file for authentication of both the ciper-text held in temporary buffers, as well as the database file itself.  The cipher-text MAC is generated on the cipher-text alone and verified within each processing mode so that alterations to the cipher-text through the temporary buffers will be detected and thwart any type of man-in-the-middle attack. The database file as a whole is also authenticated so that the associated data (salt, cipher name, digest name and key derivation configuration) can also be authenticated and detected upon opening the database before other processing modes are used.
+Verifying the integrity of the database file with a checksum means that an actual attack can be detected with very little risk of a false-positive if the integrity check passes but the authenticity check does not. Verifying the authenticity of the cipher-text after it's loaded into memory will also detect tampering (or faulty memory) after it's loaded from disk. The only circumstance in which a false-positive could happen is if the memory that the ciphertext, associated data or MAC was loaded into is faulty and caused corruption after being loaded from disk and passing the integrity test. Otherwise, a passing integrity test, but a failed authenticity test would imply that the checksum was deliberately forged to match the modified cipher-text and/or associated data, indicating an attack on the cipher-text and/or associated data.
+
+<P>
+The password used when the database was created is hashed with HMAC using a key derived from the salt. Because every modification of the database results in a newly generated salt, every modification will also result in a new keyed hash.  Failing the password check will preclude an authenticity check. This isn't intended to add an extra security layer, but rather to be more user-friendly.  If the password entered was incorrect, the proper keys for HMAC could not be generated, and so if only the MAC alone were used, it would result in a failed authentication check even if the cipher-text and associated data was authentic but the password was merely mistyped.
+
+<P>
+Modification of various associated data or the cipher-text and forging the checksum to match will have differing effects (assuming the password's keyed hash is successfully forged as well). If an attacker modifies the salt or PBKDF2 iteration amount and forges the database checksum to match this modification, it will always result in a password-check failure. This is because modifying the salt or PBKDF2 iteration amount will produce a different keyed hash than the one signed to the database so it will appear that the password was incorrect (even if it actually was correct). Unless the keyed hash was somehow forged to match the supplied password as well. However, the PBKDF2 iteration amount and salt are still authenticated by HMAC as associated data, so the MAC would then have to be successfully forged as well for the modification to pass. Likewise, modifying the cipher or digest information will not affect the keyed hash of the database password, but would still fail the authentication test unless the MAC was forged to match the modifications. Finally, if the actual cipher-text itself is modified and the database checksum forged to match the change, both the keyed hash of the password and the MAC would have to be forged for the modification to pass the authenticity test.
+
+<P>
+This design was chosen to alert the user of a critical issue if they encounter a failed authenticity test, a serious issue if they failed an integrity test, and avoid alarm if they simply mistyped a password.
+
 <P>
   <a href="#index">Back To Index</a>
 <a name="lbAW">&nbsp;</a>
@@ -424,6 +458,21 @@ Two MACs are generated and appended to the database file for authentication of b
 The program will attempt to &quot;lock&quot; all memory, which will prevent it from accidentally being swapped out to disk.  It also prevents process tracing, and core dump upon crash.  In order to do this, the program needs root priveleges, but drops them after these settings have been made. The executable is installed with the SETUID and SETGID bits and with root as the owner, so the user need not execute it as root or with sudo.
 <P>
 <a href="#index">Back To Index</a>
+
+<a name="lbAY">&nbsp;</a>
+</p><h3>Clipboard Functionality</h3>
+<P>
+Automatically sending passwords to the clipboard is handled by X library calls, or by piping out to a xsel binary installed on the system. The former should be preferred for best security and functionality, but the latter is more portable, and both options can be chosen at compile time with autoconf's configuration script.  The 'primary' X selection can be used to paste the password with a middle-click (or both right and left buttons at once), and the 'clipboard' selection can be usd to paste with Ctrl+V or Right-Click->Paste. If text is subsequently highlighted, it will overwrite the 'primary' selection (and thus the password as well).
+
+<P>
+The internal X library calls offer better security because passwords are cleared from memory at exit and from the 'primary' selection at a specified amount of seconds/miliseconds after pasting; they are also stored in locked-memory to prevent swapping of this data to disk.  The countdown does not begin until a password is pasted, and if a password is pasted again, the countdown resets again to faciliatate multiple pastings. A clear time of miliseconds can be used to specify that the password should be cleared from the primary buffer after just one paste. Technically it is a milisecond delay, so a race condition between the password being pasted and cleared may be caused, and the time may need to be set higher if pasting fails; a setting of 55 ms is usually enough, as with option <i>'-O'</i>. If using the 'clipboard' selection, the timer will not be delayed until the password is pasted, but instead will begin to countdown immediately, so the program will enforce use of the 'primary' buffer if a clear time less than 5 seconds is specified.
+
+<P>
+On the contrary, with piping to an external xsel binary, passwords are not cleared from memory at exit or stored in locked memory, the countdown to clear the password from xsel's selection buffer is began immediately without pasting, and the countdown timer does not reset upon subsequent pastes. However, piping to an xsel binary is far more portable as a user can control where the password is piped to. The program will simply pipe to any binary or shell-script that can be invoked by 'xsel'; this also makes it less secure. If for example, a user is on a system using Wayland instead of X, 'xsel' could be sent to a shell-script to handle the data instead.  If the 'primary' selection is used, the program will invoke 'xsel' with no arguments and 'xsel -c' to clear, but if the 'clipboard' selection is specified, it will invoke 'xsel -b' and 'xsel -b -c' to clear.
+
+<P>
+<a href="#index">Back To Index</a>
+
 <a name="lbBC">&nbsp;</a>
 </p><h2>EXAMPLES</h2>
 
@@ -459,7 +508,7 @@ passmanager -U -f ./passwords
 Or you could do both change the password, the encryption and digest algorithms, and PBKDF2 iteration amount in one command
 <P>
 <DL COMPACT><DT><DD>
-passmanager -U -c aes-256-ctr -H whirlpool -i 1000000-P -f ./passwords
+passmanager -U -c aes-256-ctr -H whirlpool -i 1000000 -P -f ./passwords
 </DL>
 
 <P>
